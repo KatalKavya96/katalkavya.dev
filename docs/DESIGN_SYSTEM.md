@@ -65,6 +65,8 @@ Use fluid `clamp()` values in implementation.
 
 The visual mockups are denser than the intended production site. Production should add more breathing room.
 
+The current primary pages fit their hero and featured evidence in one common desktop viewport. This is achieved by showing fewer items, not by shrinking text to dashboard density. Mobile pages flow vertically.
+
 ## 5. Surfaces
 
 Cards:

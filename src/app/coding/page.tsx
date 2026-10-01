@@ -1,22 +1,25 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import {
-  ButtonLink,
-  EmptyEditorial,
-  Eyebrow,
-  PreviewNotice,
-  SectionHeading,
-} from "@/components/ui";
-import { isDesignPreview } from "@/content/site";
+import { ButtonLink, Eyebrow } from "@/components/ui";
+import { profiles } from "@/content/portfolio";
 
 export const metadata: Metadata = {
   title: "Coding Profiles",
-  description: "Coding practice and public profiles from Kavya Katal.",
+  description:
+    "Verified public coding, problem-solving, and AI/data profiles for Kavya Katal.",
 };
+
+const featuredPlatforms = ["GitHub", "LeetCode", "Kaggle"];
+const featured = featuredPlatforms.map((name) =>
+  profiles.find((profile) => profile.platform === name)!,
+);
+const otherProfiles = profiles.filter(
+  (profile) => !featuredPlatforms.includes(profile.platform),
+);
 
 export default function CodingPage() {
   return (
-    <main id="main">
+    <main id="main" className="viewport-page coding-page">
       <section className="image-hero coding-hero">
         <Image
           className="hero-image"
@@ -34,59 +37,79 @@ export default function CodingPage() {
             <span>Keep learning.</span>
           </h1>
           <p>
-            A home for public coding work, selected practice, and the projects
-            that put those skills to use.
+            Public code, problem-solving practice, and AI/data explorations
+            across the platforms I use.
           </p>
           <div className="hero-actions">
-            <ButtonLink href="#profiles">Explore profiles</ButtonLink>
-            <ButtonLink href="/about" secondary>
-              About me
+            <a
+              className="button button-primary"
+              href="https://github.com/KatalKavya96"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              View GitHub <span aria-hidden="true">↗</span>
+            </a>
+            <ButtonLink href="#profiles" secondary>
+              Explore profiles
             </ButtonLink>
           </div>
-          {isDesignPreview && <PreviewNotice />}
         </div>
       </section>
-      <section className="content-section page-width" id="profiles">
-        <SectionHeading
-          eyebrow="Profiles"
-          title="Practice with a purpose."
-          description="Profiles and activity will appear here only with your confirmed handles, links, and current data."
-        />
-        {isDesignPreview ? (
-          <div className="profile-preview">
-            <div>
-              <span>01 / Code</span>
-              <h3>Public repositories</h3>
-              <p>
-                Projects, implementation choices, and a trail of work visitors
-                can inspect.
-              </p>
-              <b>Design sample</b>
-            </div>
-            <div>
-              <span>02 / Solve</span>
-              <h3>Problem solving</h3>
-              <p>
-                Consistent practice, presented without unverified scores or
-                competitive claims.
-              </p>
-              <b>Design sample</b>
-            </div>
-            <div>
-              <span>03 / Learn</span>
-              <h3>Exploration</h3>
-              <p>
-                Experiments that connect new concepts to things built by hand.
-              </p>
-              <b>Design sample</b>
-            </div>
+      <section
+        className="viewport-work page-width"
+        id="profiles"
+        aria-labelledby="profiles-title"
+      >
+        <div className="viewport-section-head">
+          <div>
+            <Eyebrow accent="blue">Public profiles</Eyebrow>
+            <h2 id="profiles-title">Three kinds of practice.</h2>
           </div>
-        ) : (
-          <EmptyEditorial
-            title="Profiles are awaiting verification."
-            description="Handles and activity metrics will appear after they are confirmed."
-          />
-        )}
+          <span className="section-meta">Metrics shown only when verified</span>
+        </div>
+        <div className="profile-grid">
+          {featured.map((profile, index) => (
+            <a
+              key={profile.platform}
+              className="profile-card"
+              href={profile.url}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <span className="profile-index">
+                0{index + 1} / {profile.category}
+              </span>
+              <span className="profile-mark" aria-hidden="true">
+                {profile.platform === "GitHub"
+                  ? "GH"
+                  : profile.platform === "LeetCode"
+                    ? "LC"
+                    : "K"}
+              </span>
+              <strong>{profile.platform}</strong>
+              <span className="profile-handle">{profile.handle}</span>
+              <p>{profile.description}</p>
+              <span className="profile-visit">
+                View profile <b aria-hidden="true">↗</b>
+              </span>
+            </a>
+          ))}
+        </div>
+        <div className="profile-secondary">
+          <span>More places to explore</span>
+          <div>
+            {otherProfiles.map((profile) => (
+              <a
+                key={profile.platform}
+                href={profile.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {profile.platform} <span aria-hidden="true">↗</span>
+              </a>
+            ))}
+          </div>
+        </div>
       </section>
     </main>
   );

@@ -22,7 +22,7 @@ No metrics in the hero.
 
 ## Filters
 
-Filters are deferred until verified projects give visitors meaningful categories to filter. No nonfunctional filter row is shown in the initial design preview.
+The initial screen uses a small Featured / More work switch, reflected in the `set` query parameter, so six sourced supporting projects remain accessible without lengthening the desktop page. Domain filters may follow when the collection grows.
 
 Use a single quiet filter row:
 

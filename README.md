@@ -1,6 +1,6 @@
 # Kavya Katal Portfolio
 
-A premium, responsive portfolio design for Kavya Katal. The site is currently in content collection: only Kavya's name is verified in this repository.
+A premium, responsive engineering portfolio for Kavya Katal. Public repositories, authored pull requests, and user-supplied profile URLs now ground the initial content.
 
 ## Start here
 
@@ -22,7 +22,7 @@ npm install
 npm run dev
 ```
 
-Development mode includes labeled design samples so layout can be reviewed. Production builds omit sample project/profile/contribution cards until verified content is available. All routes currently have `noindex` metadata during content collection.
+The four primary pages use a one-screen desktop composition; mobile layouts stack for readability. All routes currently have `noindex` metadata while personal role details, contact email, resume, and project media are being collected.
 
 Use current stable package versions when the project is initialized and commit the lockfile.
 

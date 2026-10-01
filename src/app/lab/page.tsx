@@ -1,29 +1,56 @@
 import type { Metadata } from "next";
-import { ButtonLink, Eyebrow } from "@/components/ui";
+import { Eyebrow } from "@/components/ui";
 
 export const metadata: Metadata = {
   title: "Lab",
-  description: "Experiments and learning notes from Kavya Katal.",
+  description: "Machine-learning and engineering experiments from Kavya Katal.",
 };
+
+const labLinks = [
+  {
+    name: "Property Price Prediction",
+    detail: "Ames Housing model pipeline and Streamlit interface",
+    url: "https://github.com/KatalKavya96/Property_Price_Prediction",
+  },
+  {
+    name: "Autonomous Systems Lab",
+    detail: "Public experiment repository",
+    url: "https://github.com/KatalKavya96/autonomous-systems-lab",
+  },
+  {
+    name: "Apache Magpie Lab",
+    detail: "Public exploration repository",
+    url: "https://github.com/KatalKavya96/apache-magpie-lab",
+  },
+];
+
 export default function LabPage() {
   return (
-    <main id="main" className="simple-page page-width">
+    <main id="main" className="simple-page page-width lab-page">
       <Eyebrow accent="blue">The lab</Eyebrow>
       <h1>
-        A place to
+        Explore.
         <br />
-        <span>try things out.</span>
+        <span>Build. Learn.</span>
       </h1>
       <p>
-        Smaller experiments will live here when their purpose, code, and
-        learnings are ready to share.
+        Smaller experiments have a place here alongside the larger systems.
+        Follow the source to see what each repository contains.
       </p>
       <div className="simple-line" />
-      <div className="simple-bottom">
-        <span>Ideas → experiments → understanding</span>
-        <ButtonLink href="/projects" secondary>
-          See the work
-        </ButtonLink>
+      <div className="simple-link-grid">
+        {labLinks.map((item) => (
+          <a
+            key={item.name}
+            href={item.url}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <span>{item.name}</span>
+            <small>{item.detail}</small>
+            <b aria-hidden="true">↗</b>
+          </a>
+        ))}
       </div>
     </main>
   );

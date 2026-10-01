@@ -1,22 +1,17 @@
 import type { Metadata } from "next";
 import Image from "next/image";
-import {
-  ButtonLink,
-  EmptyEditorial,
-  Eyebrow,
-  PreviewNotice,
-  SectionHeading,
-} from "@/components/ui";
-import { isDesignPreview } from "@/content/site";
+import { ButtonLink, Eyebrow } from "@/components/ui";
+import { contributions, githubSnapshot } from "@/content/portfolio";
 
 export const metadata: Metadata = {
   title: "Open Source",
-  description: "Open source work and contribution stories from Kavya Katal.",
+  description:
+    "Selected public pull requests by Kavya Katal across open-source systems.",
 };
 
 export default function OpenSourcePage() {
   return (
-    <main id="main">
+    <main id="main" className="viewport-page source-page">
       <section className="image-hero source-hero">
         <Image
           className="hero-image"
@@ -34,71 +29,69 @@ export default function OpenSourcePage() {
             <span>in public.</span>
           </h1>
           <p>
-            Contributions are best understood through the problem, the review,
-            and the change that landed.
+            Contributions across developer infrastructure, product UI, and
+            cloud-native systems — with the pull requests to inspect.
           </p>
           <div className="hero-actions">
-            <ButtonLink href="#contributions">See the approach</ButtonLink>
-            <ButtonLink href="/contact" secondary>
-              Connect
-            </ButtonLink>
+            <ButtonLink href="#contributions">View contributions</ButtonLink>
+            <a
+              className="button button-secondary"
+              href="https://github.com/KatalKavya96"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              GitHub <span aria-hidden="true">↗</span>
+            </a>
           </div>
-          {isDesignPreview && <PreviewNotice />}
         </div>
       </section>
-      <section className="content-section page-width" id="contributions">
-        <SectionHeading
-          eyebrow="Contribution stories"
-          title="Small changes. Real context."
-          description="Featured contributions will link directly to their public pull requests and explain Kavya's exact role."
-        />
-        {isDesignPreview ? (
-          <div className="contribution-preview">
-            <div>
-              <span className="contribution-number">01</span>
-              <span className="sample-label">Design sample</span>
-              <h3>Understand the system</h3>
-              <p>
-                Start with the surrounding project and the need the change
-                addresses.
-              </p>
-            </div>
-            <div>
-              <span className="contribution-number">02</span>
-              <span className="sample-label">Design sample</span>
-              <h3>Make the change</h3>
-              <p>
-                Show the implementation, tests, and decisions visible in the
-                pull request.
-              </p>
-            </div>
-            <div>
-              <span className="contribution-number">03</span>
-              <span className="sample-label">Design sample</span>
-              <h3>Trace the outcome</h3>
-              <p>
-                Link to review and merge evidence when those details are
-                verified.
-              </p>
-            </div>
+      <section
+        className="viewport-work page-width"
+        id="contributions"
+        aria-labelledby="contributions-title"
+      >
+        <div className="viewport-section-head">
+          <div>
+            <Eyebrow accent="green">Featured contributions</Eyebrow>
+            <h2 id="contributions-title">A trail of real changes.</h2>
           </div>
-        ) : (
-          <EmptyEditorial
-            title="Contributions are being verified."
-            description="Specific repositories and pull requests will be published after confirmation."
-          />
-        )}
-      </section>
-      <section className="statement-section page-width">
-        <div className="statement-index">Public work</div>
-        <div>
-          <p className="statement-copy">
-            A pull request tells a richer story than a number ever could.
-          </p>
-          <p className="statement-sub">
-            This section will favor a few meaningful examples over a wall of
-            counts.
-          </p>
+          <a
+            className="source-metric"
+            href={githubSnapshot.sourceUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            <strong>{githubSnapshot.mergedPullRequests}</strong>
+            <span>
+              merged PRs <small>Verified {githubSnapshot.lastVerified}</small>
+            </span>
+          </a>
+        </div>
+        <div className="contribution-grid">
+          {contributions.map((item, index) => (
+            <a
+              className="contribution-card"
+              href={item.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              key={item.url}
+            >
+              <span className="contribution-top">
+                <span>
+                  0{index + 1} / {item.organization}
+                </span>
+                <b>{item.status}</b>
+              </span>
+              <span className="contribution-middle">
+                <small>{item.domain}</small>
+                <strong>{item.title}</strong>
+                <span>{item.description}</span>
+              </span>
+              <span className="contribution-bottom">
+                View pull request <b aria-hidden="true">↗</b>
+              </span>
+            </a>
+          ))}
         </div>
       </section>
     </main>

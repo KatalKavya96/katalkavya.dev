@@ -1,6 +1,6 @@
 import Link from "next/link";
 import type { ReactNode } from "react";
-import type { SampleProject } from "@/content/site";
+import type { Project } from "@/content/portfolio";
 
 export function Eyebrow({
   children,
@@ -13,34 +13,6 @@ export function Eyebrow({
     <div className={`eyebrow eyebrow-${accent}`}>
       <span aria-hidden="true" />
       {children}
-    </div>
-  );
-}
-
-export function SectionHeading({
-  eyebrow,
-  title,
-  description,
-  action,
-}: {
-  eyebrow: string;
-  title: string;
-  description?: string;
-  action?: { label: string; href: string };
-}) {
-  return (
-    <div className="section-heading">
-      <div>
-        <Eyebrow>{eyebrow}</Eyebrow>
-        <h2>{title}</h2>
-        {description && <p>{description}</p>}
-      </div>
-      {action && (
-        <Link className="text-link" href={action.href}>
-          {action.label}
-          <span aria-hidden="true">↗</span>
-        </Link>
-      )}
     </div>
   );
 }
@@ -67,17 +39,11 @@ export function ButtonLink({
   );
 }
 
-export function PreviewNotice() {
-  return (
-    <div className="preview-notice" role="note">
-      <span className="preview-dot" /> Design preview{" "}
-      <span className="preview-divider">/</span> Sample cards are layout
-      examples; real content comes after your review.
-    </div>
-  );
-}
-
-export function ProjectVisual({ project }: { project: SampleProject }) {
+export function ProjectVisual({
+  project,
+}: {
+  project: Pick<Project, "tone" | "visual" | "number">;
+}) {
   return (
     <div
       className={`project-visual visual-${project.tone} visual-${project.visual}`}
@@ -89,7 +55,7 @@ export function ProjectVisual({ project }: { project: SampleProject }) {
           <i />
           <i />
           <i />
-          <span>preview / {project.number}</span>
+          <span>visual concept / {project.number}</span>
         </div>
         <div className="visual-content">
           <div className="visual-rail">
@@ -116,39 +82,28 @@ export function ProjectVisual({ project }: { project: SampleProject }) {
   );
 }
 
-export function SampleCard({ project }: { project: SampleProject }) {
+export function ProjectCard({ project }: { project: Project }) {
   return (
-    <article className="project-card">
+    <a
+      className="project-card real-project-card"
+      href={project.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <ProjectVisual project={project} />
       <div className="card-body">
         <div className="card-kicker">
           <span>
             {project.number} / {project.category}
           </span>
-          <span className="sample-label">Design sample</span>
         </div>
         <h3>{project.title}</h3>
         <p>{project.description}</p>
         <span className="card-bottom">
-          Case study structure <span aria-hidden="true">↗</span>
+          <span>{project.tags.slice(0, 3).join(" · ")}</span>
+          <span aria-hidden="true">↗</span>
         </span>
       </div>
-    </article>
-  );
-}
-
-export function EmptyEditorial({
-  title,
-  description,
-}: {
-  title: string;
-  description: string;
-}) {
-  return (
-    <div className="empty-editorial">
-      <span className="empty-line" />
-      <h3>{title}</h3>
-      <p>{description}</p>
-    </div>
+    </a>
   );
 }

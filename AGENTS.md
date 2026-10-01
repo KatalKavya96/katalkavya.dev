@@ -100,6 +100,7 @@ Unless a page spec explicitly overrides this:
 - Navigation: max 6 primary links plus one CTA.
 - Avoid two dense data sections back-to-back.
 - Keep section spacing generous: 112–160px desktop, 72–104px tablet, 56–80px mobile.
+- For the current primary-page design, Home, Projects, Open Source, and Coding compose hero and selected evidence within one common desktop viewport. Curate content to preserve readability; phones use a vertical flow.
 
 ## 6. Visual rules
 

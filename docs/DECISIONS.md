@@ -37,7 +37,7 @@ Pages render from typed normalized content and server/static sources. Third-part
 **Status:** Accepted  
 **Date:** 2026-10-01
 
-The repository's previous Vardhman names, projects, roles, and metrics were reference material. Kavya's name is the only verified personal content available. Generic design samples render in development with explicit labels; production omits them and uses honest empty states. The site remains `noindex` until real content and links are supplied and reviewed.
+The repository's previous Vardhman names, projects, roles, and metrics were reference material. The initial implementation used generic development samples. D-008 supersedes that temporary content gate with public-source-backed entries. The site remains `noindex` until Kavya reviews personal roles, contact details, and media.
 
 Filters, project detail pages, contribution timelines, and coding activity graphics follow the real content. They are deferred rather than filled with fabricated examples.
 
@@ -47,6 +47,13 @@ Filters, project detail pages, contribution timelines, and coding activity graph
 **Date:** 2026-10-01
 
 Use Next.js App Router, strict TypeScript, and CSS variables with custom CSS. Native CSS handles the restrained visual effects without an animation or utility CSS dependency. Home's sphere is CSS-drawn. Projects, Open Source, and Coding use separate generated images optimized to WebP and served through `next/image`.
+
+## D-008 — Verified public content and one-screen desktop layout
+
+**Status:** Accepted  
+**Date:** 2026-10-01
+
+The Git remote identifies Kavya's public GitHub account. Repository READMEs and authored PRs supply the initial project and contribution descriptions; Kavya supplied eight additional profile URLs. The four primary pages now fit a curated hero and evidence row in a common desktop viewport. Phones retain vertical scrolling for legibility. The dated GitHub snapshot records 177 authored and 148 merged PRs; the site shows only the merged count with its verification date. Personal role details and outcomes beyond public evidence remain conservative.
 
 ---
 

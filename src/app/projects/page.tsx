@@ -1,25 +1,31 @@
 import type { Metadata } from "next";
 import Image from "next/image";
+import Link from "next/link";
 import {
   ButtonLink,
-  EmptyEditorial,
   Eyebrow,
-  PreviewNotice,
+  ProjectCard,
   ProjectVisual,
-  SampleCard,
-  SectionHeading,
 } from "@/components/ui";
-import { isDesignPreview, sampleProjects } from "@/content/site";
+import { projects } from "@/content/portfolio";
 
 export const metadata: Metadata = {
   title: "Projects",
-  description: "Selected project stories and case studies from Kavya Katal.",
+  description:
+    "Selected engineering projects by Kavya Katal, with links to public source and evidence.",
 };
 
-export default function ProjectsPage() {
-  const flagship = sampleProjects[0];
+export default async function ProjectsPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ set?: string }>;
+}) {
+  const { set } = await searchParams;
+  const showMore = set === "more";
+  const flagship = projects[0];
+  const shelfProjects = showMore ? projects.slice(4, 7) : projects.slice(1, 4);
   return (
-    <main id="main">
+    <main id="main" className="viewport-page projects-page">
       <section className="image-hero projects-hero">
         <Image
           className="hero-image"
@@ -37,85 +43,75 @@ export default function ProjectsPage() {
             <span>real systems.</span>
           </h1>
           <p>
-            Selected work, presented through the problems, decisions, and
-            details that shaped it.
+            Agentic engineering, developer tools, and full-stack products — with
+            public source and contribution evidence.
           </p>
           <div className="hero-actions">
-            <ButtonLink href="#work">Explore projects</ButtonLink>
-            <ButtonLink href="/contact" secondary>
-              Start a conversation
+            <ButtonLink href="#project-work">Explore projects</ButtonLink>
+            <ButtonLink href="/open-source" secondary>
+              Open source work
             </ButtonLink>
           </div>
-          {isDesignPreview && <PreviewNotice />}
         </div>
       </section>
-      <section className="content-section page-width" id="work">
-        <SectionHeading
-          eyebrow="The work"
-          title="A closer look at what gets built."
-          description="The final collection will be curated around substantive work, with direct links to demos and source where available."
-        />
-        {isDesignPreview ? (
-          <>
-            <div className="feature-project">
-              <div className="feature-copy">
-                <span className="feature-index">
-                  01 / Featured case study <i>Design sample</i>
-                </span>
-                <h3>{flagship.title}</h3>
-                <p>{flagship.description}</p>
-                <div className="feature-facts">
-                  <span>Problem</span>
-                  <span>System</span>
-                  <span>Decisions</span>
-                  <span>Evidence</span>
-                </div>
-                <span className="feature-link">
-                  Case study layout <b>↗</b>
-                </span>
-              </div>
-              <ProjectVisual project={flagship} />
-            </div>
-            <div className="project-grid lower-grid">
-              {sampleProjects.slice(1).map((project) => (
-                <SampleCard key={project.number} project={project} />
+      <section
+        className="viewport-work page-width"
+        id="project-work"
+        aria-labelledby="project-title"
+      >
+        <div className="viewport-section-head">
+          <div>
+            <Eyebrow accent="amber">Selected projects</Eyebrow>
+            <h2 id="project-title">Built to be inspected.</h2>
+          </div>
+          <div className="shelf-switch" aria-label="Project selection">
+            <Link
+              href="/projects#project-work"
+              aria-current={!showMore ? "page" : undefined}
+              className={!showMore ? "active" : undefined}
+            >
+              Featured
+            </Link>
+            <Link
+              href="/projects?set=more#project-work"
+              aria-current={showMore ? "page" : undefined}
+              className={showMore ? "active" : undefined}
+            >
+              More work
+            </Link>
+          </div>
+        </div>
+        <div className="feature-project">
+          <div className="feature-copy">
+            <span className="feature-index">
+              Flagship / Agentic developer tools
+            </span>
+            <h3>{flagship.title}</h3>
+            <p>{flagship.description}</p>
+            <div className="feature-facts">
+              {flagship.tags.map((tag) => (
+                <span key={tag}>{tag}</span>
               ))}
             </div>
-          </>
-        ) : (
-          <EmptyEditorial
-            title="Project case studies are being prepared."
-            description="No demo project names or outcomes are published as facts."
-          />
-        )}
-      </section>
-      <section className="process-section page-width">
-        <SectionHeading
-          eyebrow="How stories unfold"
-          title="From context to evidence."
-        />
-        <div className="process-grid">
-          <div>
-            <span>01</span>
-            <h3>Context</h3>
-            <p>What problem was worth solving?</p>
+            <a
+              className="feature-link"
+              href={flagship.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              Explore repository <b aria-hidden="true">↗</b>
+            </a>
           </div>
-          <div>
-            <span>02</span>
-            <h3>Decisions</h3>
-            <p>Which trade-offs shaped the build?</p>
-          </div>
-          <div>
-            <span>03</span>
-            <h3>System</h3>
-            <p>How do the important pieces fit?</p>
-          </div>
-          <div>
-            <span>04</span>
-            <h3>Proof</h3>
-            <p>What can a visitor inspect?</p>
-          </div>
+          <ProjectVisual project={flagship} />
         </div>
+        <div className="project-grid project-mini-grid">
+          {shelfProjects.map((project) => (
+            <ProjectCard key={project.slug} project={project} />
+          ))}
+        </div>
+        <Link className="project-more" href="/lab">
+          More experiments and learning <span aria-hidden="true">↗</span>
+        </Link>
       </section>
     </main>
   );

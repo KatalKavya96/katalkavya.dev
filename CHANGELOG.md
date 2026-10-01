@@ -18,3 +18,6 @@ Meaningful website changes are recorded here.
 ### Changed
 
 - Replaced Vardhman-specific product assumptions in the governing docs with Kavya-specific content collection rules.
+- Replaced development samples with public repository, pull-request, and user-supplied profile links.
+- Reworked the main four pages as single-viewport desktop compositions with readable mobile stacking.
+- Added evidence-backed About, Journey, Lab, and Contact content.
