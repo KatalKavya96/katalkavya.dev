@@ -7,6 +7,8 @@ export type Project = {
   tags: string[];
   tone: "violet" | "amber" | "blue";
   visual: "system" | "product" | "research";
+  media?: { src: string; alt: string; position?: string };
+  mark?: string;
   sourceUrl: string;
   evidenceUrl?: string;
   context?: string;
@@ -19,6 +21,11 @@ export type Contribution = {
   url: string;
   status: "Merged";
   domain: string;
+  pullNumber: number;
+  additions: number;
+  deletions: number;
+  changedFiles: number;
+  lastVerified: string;
 };
 
 export type PublicProfile = {
@@ -57,6 +64,10 @@ export const projects: Project[] = [
     tags: ["React Flow", "Prisma", "Socket.IO"],
     tone: "blue",
     visual: "system",
+    media: {
+      src: "/media/framelabs-hero.webp",
+      alt: "FrameLabs mark from the project repository",
+    },
     sourceUrl: "https://github.com/KatalKavya96/Framelabs-Solo",
   },
   {
@@ -69,6 +80,11 @@ export const projects: Project[] = [
     tags: ["Full stack", "Multi-tenant", "E2E"],
     tone: "amber",
     visual: "product",
+    media: {
+      src: "/media/hostin-property.webp",
+      alt: "Property image from the HostIn project repository",
+    },
+    mark: "/media/hostin-mark.webp",
     sourceUrl: "https://github.com/1forgeco/HostIn",
     evidenceUrl: "https://github.com/1forgeco/HostIn/pull/43",
   },
@@ -82,6 +98,11 @@ export const projects: Project[] = [
     tags: ["Browser agents", "Workflows", "Cloudflare"],
     tone: "violet",
     visual: "product",
+    media: {
+      src: "/media/forgeos-og.webp",
+      alt: "ForgeOS project Open Graph artwork from the repository",
+    },
+    mark: "/media/forgeos-mark.webp",
     sourceUrl: "https://github.com/1forgeco/forgeOS",
     evidenceUrl: "https://github.com/1forgeco/forgeOS/pull/1",
   },
@@ -95,6 +116,10 @@ export const projects: Project[] = [
     tags: ["React", "Express", "Prisma"],
     tone: "amber",
     visual: "product",
+    media: {
+      src: "/media/electrify-logo.webp",
+      alt: "Electrify logo artwork from the project repository",
+    },
     sourceUrl: "https://github.com/KatalKavya96/Electrify",
   },
   {
@@ -107,6 +132,7 @@ export const projects: Project[] = [
     tags: ["Next.js", "Express", "Prisma"],
     tone: "blue",
     visual: "research",
+    mark: "/media/maintainex-mark.png",
     sourceUrl: "https://github.com/KatalKavya96/Maintainex",
   },
   {
@@ -119,6 +145,10 @@ export const projects: Project[] = [
     tags: ["Python", "Scikit-learn", "Streamlit"],
     tone: "violet",
     visual: "research",
+    media: {
+      src: "/media/property-architecture.webp",
+      alt: "Architecture diagram from the Property Price Prediction repository",
+    },
     sourceUrl: "https://github.com/KatalKavya96/Property_Price_Prediction",
   },
 ];
@@ -132,6 +162,11 @@ export const contributions: Contribution[] = [
     url: "https://github.com/apache/magpie/pull/739",
     status: "Merged",
     domain: "Developer infrastructure",
+    pullNumber: 739,
+    additions: 1309,
+    deletions: 8,
+    changedFiles: 20,
+    lastVerified: "2026-10-01",
   },
   {
     organization: "Apache Airflow",
@@ -141,6 +176,11 @@ export const contributions: Contribution[] = [
     url: "https://github.com/apache/airflow/pull/56083",
     status: "Merged",
     domain: "Product UI",
+    pullNumber: 56083,
+    additions: 32,
+    deletions: 7,
+    changedFiles: 2,
+    lastVerified: "2026-10-01",
   },
   {
     organization: "Meshery",
@@ -150,6 +190,11 @@ export const contributions: Contribution[] = [
     url: "https://github.com/meshery/meshery/pull/16294",
     status: "Merged",
     domain: "Cloud native",
+    pullNumber: 16294,
+    additions: 4416,
+    deletions: 0,
+    changedFiles: 1,
+    lastVerified: "2026-10-01",
   },
 ];
 
@@ -237,3 +282,23 @@ export const githubSnapshot = {
   sourceUrl:
     "https://github.com/search?q=author%3AKatalKavya96+is%3Apr+is%3Amerged&type=pullrequests",
 } as const;
+
+// Read from linked public profiles on 2026-10-01. Live adapters replace these
+// values whenever the corresponding platform responds successfully.
+export const profileMetricsSnapshot = {
+  lastVerified: "2026-10-01",
+  github: { publicRepos: 104, followers: 44 },
+  codeforces: { rating: 970, rank: "newbie" },
+  leetcode: { solved: 866, hard: 143 },
+  kaggle: { datasets: 9 },
+} as const;
+
+export const repositoryPushSnapshot: Record<string, string> = {
+  caramelai: "2026-09-27T00:17:32Z",
+  framelabs: "2026-06-21T08:19:13Z",
+  hostin: "2026-08-30T05:27:37Z",
+  forgeos: "2026-07-24T16:18:34Z",
+  electrify: "2026-04-28T22:10:25Z",
+  maintainex: "2026-06-17T17:37:29Z",
+  "property-price-prediction": "2026-04-21T22:31:25Z",
+};

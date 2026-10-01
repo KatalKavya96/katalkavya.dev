@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "autoAddAfter": "2026-10-01T00:00:00Z",
+  "hiddenRepositories": [],
+  "projects": [
+    {
+      "repository": "KatalKavya96/CaramelAI",
+      "domains": ["Agentic AI", "Developer tools"],
+      "addedAt": "2026-10-01T00:00:00Z"
+    },
+    {
+      "repository": "KatalKavya96/Framelabs-Solo",
+      "domains": ["Developer tools", "Full stack"],
+      "addedAt": "2026-10-01T00:00:00Z"
+    },
+    {
+      "repository": "1forgeco/HostIn",
+      "domains": ["Product", "Full stack"],
+      "addedAt": "2026-10-01T00:00:00Z"
+    },
+    {
+      "repository": "1forgeco/forgeOS",
+      "domains": ["Agentic AI", "Product"],
+      "addedAt": "2026-10-01T00:00:00Z"
+    },
+    {
+      "repository": "KatalKavya96/Electrify",
+      "domains": ["Full stack", "Product"],
+      "addedAt": "2026-10-01T00:00:00Z"
+    },
+    {
+      "repository": "KatalKavya96/Maintainex",
+      "domains": ["Developer tools", "Open source"],
+      "addedAt": "2026-10-01T00:00:00Z"
+    },
+    {
+      "repository": "KatalKavya96/Property_Price_Prediction",
+      "domains": ["AI / ML"],
+      "addedAt": "2026-10-01T00:00:00Z"
+    }
+  ]
+}

@@ -1,17 +1,36 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ButtonLink, Eyebrow } from "@/components/ui";
-import { contributions, githubSnapshot } from "@/content/portfolio";
+import { OpenSourceExplorer } from "@/components/open-source-explorer";
+import { getOpenSourceFeed } from "@/lib/open-source-feed";
 
 export const metadata: Metadata = {
   title: "Open Source",
   description:
-    "Selected public pull requests by Kavya Katal across open-source systems.",
+    "Kavya Katal's public pull requests across open-source repositories, with a live timeline and direct evidence links.",
 };
 
-export default function OpenSourcePage() {
+export const dynamic = "force-dynamic";
+
+export default async function OpenSourcePage() {
+  const feed = await getOpenSourceFeed();
+  const latest = feed.groups.slice(0, 3);
   return (
-    <main id="main" className="viewport-page source-page">
+    <main id="main" className="source-page expansive-page">
+      <span
+        className="page-live-dot"
+        role="status"
+        aria-label={
+          feed.live
+            ? "Live pull request data"
+            : "Verified public pull request data"
+        }
+        title={
+          feed.live
+            ? "Live pull request data"
+            : "Verified public pull request data"
+        }
+      />
       <section className="image-hero source-hero">
         <Image
           className="hero-image"
@@ -29,11 +48,11 @@ export default function OpenSourcePage() {
             <span>in public.</span>
           </h1>
           <p>
-            Contributions across developer infrastructure, product UI, and
-            cloud-native systems — with the pull requests to inspect.
+            Pull requests across developer infrastructure, product interfaces,
+            and cloud-native systems — each linked to the work itself.
           </p>
           <div className="hero-actions">
-            <ButtonLink href="#contributions">View contributions</ButtonLink>
+            <ButtonLink href="#contributions">Explore contributions</ButtonLink>
             <a
               className="button button-secondary"
               href="https://github.com/KatalKavya96"
@@ -44,56 +63,34 @@ export default function OpenSourcePage() {
             </a>
           </div>
         </div>
-      </section>
-      <section
-        className="viewport-work page-width"
-        id="contributions"
-        aria-labelledby="contributions-title"
-      >
-        <div className="viewport-section-head">
-          <div>
-            <Eyebrow accent="green">Featured contributions</Eyebrow>
-            <h2 id="contributions-title">A trail of real changes.</h2>
-          </div>
-          <a
-            className="source-metric"
-            href={githubSnapshot.sourceUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <strong>{githubSnapshot.mergedPullRequests}</strong>
-            <span>
-              merged PRs <small>Verified {githubSnapshot.lastVerified}</small>
-            </span>
-          </a>
-        </div>
-        <div className="contribution-grid">
-          {contributions.map((item, index) => (
+        <div
+          className="hero-proof proof-source"
+          aria-label="Recent public contributions"
+        >
+          {latest.map((group, index) => (
             <a
-              className="contribution-card"
-              href={item.url}
+              key={group.repository}
+              className={`floating-proof proof-${index + 1}`}
+              href={group.pulls[0].url}
               target="_blank"
               rel="noopener noreferrer"
-              key={item.url}
             >
-              <span className="contribution-top">
-                <span>
-                  0{index + 1} / {item.organization}
-                </span>
-                <b>{item.status}</b>
+              <span className="proof-initial">
+                {group.owner.slice(0, 1).toUpperCase()}
               </span>
-              <span className="contribution-middle">
-                <small>{item.domain}</small>
-                <strong>{item.title}</strong>
-                <span>{item.description}</span>
+              <span>
+                <strong>{group.repository}</strong>
+                <small>
+                  PR #{group.pulls[0].number} ·{" "}
+                  {group.pulls[0].status.toLowerCase()}
+                </small>
               </span>
-              <span className="contribution-bottom">
-                View pull request <b aria-hidden="true">↗</b>
-              </span>
+              <i />
             </a>
           ))}
         </div>
       </section>
+      <OpenSourceExplorer initialFeed={feed} />
     </main>
   );
 }
