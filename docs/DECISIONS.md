@@ -50,10 +50,33 @@ Use Next.js App Router, strict TypeScript, and CSS variables with custom CSS. Na
 
 ## D-008 — Verified public content and one-screen desktop layout
 
-**Status:** Accepted  
+**Status:** Superseded by D-009
 **Date:** 2026-10-01
 
 The Git remote identifies Kavya's public GitHub account. Repository READMEs and authored PRs supply the initial project and contribution descriptions; Kavya supplied eight additional profile URLs. The four primary pages now fit a curated hero and evidence row in a common desktop viewport. Phones retain vertical scrolling for legibility. The dated GitHub snapshot records 177 authored and 148 merged PRs; the site shows only the merged count with its verification date. Personal role details and outcomes beyond public evidence remain conservative.
+
+## D-009 — Live public evidence and private curation
+
+**Status:** Accepted
+**Date:** 2026-10-02
+
+Kavya requested six visible projects, automatic discovery of newer public repositories, repository-specific PR histories, and an owner-only editor. The four main pages may scroll on desktop to keep that evidence legible. GitHub repository and PR reads are server-side and cached, with dated verified snapshots when an upstream endpoint fails. Codeforces, LeetCode, and Kaggle use their respective public endpoints; platforms without reliable public data remain links without fabricated metrics.
+
+The editor uses GitHub OAuth to verify Kavya's numeric account ID, an HMAC-signed HttpOnly session, and a separate repository-scoped Contents token to write `src/content/curation.json`. Public visitors have no editor controls or write endpoint access. Auto-discovered projects become explicit curation entries when reordered or assigned domains. Subtle background motion and the organization ribbon stop when reduced motion is requested.
+
+## D-010 — Coding Profiles reference composition
+
+**Status:** Accepted
+**Date:** 2026-10-02
+
+Use a warm, photorealistic dusk desk image tailored to the Coding Profiles reference. Fit the hero, four verified summary values, four primary graph cards, and PR activity ribbon in the first screen at the supplied reference viewport while allowing mobile cards to stack and scroll. The header command search indexes public pages, current curated projects, and profile links. Unsupported coding platforms remain linked without invented numbers, per Kavya's direction.
+
+## D-011 — Unique organization ribbon
+
+**Status:** Accepted
+**Date:** 2026-10-02
+
+The Open Source ribbon renders each verified organization once. It measures the available space and pans that single track only when it overflows, reversing smoothly at the ends. Its label has a separate column and the moving links remain clipped to the track. Motion pauses during interaction and is disabled for reduced-motion visitors.
 
 ---
 

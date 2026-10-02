@@ -255,16 +255,26 @@ export async function getPublicRepositories(): Promise<
   Array<{ repository: string; snapshot: GitHubRepoSnapshot }>
 > {
   try {
-    const response = await fetch(
-      "https://api.github.com/users/KatalKavya96/repos?per_page=100&sort=created&direction=desc",
-      {
-        headers: githubHeaders(readToken()),
-        next: { revalidate: 900 },
-        signal: AbortSignal.timeout(4500),
-      },
+    const pages = await Promise.all(
+      [1, 2].map((page) =>
+        fetch(
+          `https://api.github.com/users/KatalKavya96/repos?per_page=100&sort=created&direction=desc&page=${page}`,
+          {
+            headers: githubHeaders(readToken()),
+            next: { revalidate: 900 },
+            signal: AbortSignal.timeout(4500),
+          },
+        ),
+      ),
     );
-    if (!response.ok) return [];
-    const repositories = (await response.json()) as GitHubRepo[];
+    if (!pages[0].ok) return [];
+    const repositories = (
+      await Promise.all(
+        pages.map(async (response) =>
+          response.ok ? ((await response.json()) as GitHubRepo[]) : [],
+        ),
+      )
+    ).flat();
     return repositories
       .filter(
         (repo) =>
@@ -330,6 +340,7 @@ function projectFromEntry(
     sourceUrl: `https://github.com/${repository}`,
     evidenceUrl: existing?.evidenceUrl,
     context: existing?.context,
+    pushedAt: data?.pushedAt,
     media: existing?.media ?? {
       src: `https://opengraph.githubassets.com/1/${repository}`,
       alt: `GitHub repository preview for ${repository}`,
@@ -367,8 +378,9 @@ export async function getCuratedProjects(): Promise<Project[]> {
     ...automatic,
   ];
   return Promise.all(
-    ordered.map(async (entry) =>
-      projectFromEntry(entry, await fetchRepository(entry.repository)),
-    ),
+    ordered.map(async (entry, index) => ({
+      ...projectFromEntry(entry, await fetchRepository(entry.repository)),
+      number: String(index + 1).padStart(2, "0"),
+    })),
   );
 }

@@ -22,7 +22,7 @@ No metrics in the hero.
 
 ## Filters
 
-The initial screen uses a small Featured / More work switch, reflected in the `set` query parameter, so six sourced supporting projects remain accessible without lengthening the desktop page. Domain filters may follow when the collection grows.
+Use a horizontally scrollable domain filter row reflected in the `domain` query parameter. Show the complete curated set, starting with at least six cards and allowing the page to scroll.
 
 Use a single quiet filter row:
 
@@ -57,7 +57,7 @@ Do not duplicate the same information in separate side widgets.
 Cards should be large enough to breathe.
 Curate only Kavya's confirmed projects. The development preview may use clearly labeled sample cards to review spacing and visual hierarchy.
 
-Do not display every small repository here.
+New public repositories created after the curation cutoff appear automatically in creation order as experiments. The owner can assign domains, reorder, remove, and restore them in the private editor. Small repositories may be hidden from the public collection there.
 
 ## Card anatomy
 

@@ -16,54 +16,40 @@ Headline direction: `Code, solve, build, grow.`
 Supporting copy: coding activity, repositories, problem solving and technical exploration across selected platforms.
 
 Primary CTA: `View GitHub`
-Secondary CTA: `Resume`
+Secondary CTA: `Explore profiles`
 
 ### Floating platform chips
 
-Max four: GitHub plus 2–3 strongest active profiles.
-Secondary platforms belong lower on the page.
+Five compact chips on desktop: GitHub, LeetCode, Kaggle, HackerRank, and Codeforces. The chips use official platform marks and link to Kavya's profiles. Hide them on phones, where the desk image and copy need the space.
 
 ## Summary strip
 
-Omit the summary and activity visualization until profile URLs and current metrics are verified.
-
-Max four verified values.
-Recommended categories:
-
-- repositories or meaningful public projects,
-- contribution activity,
-- problems solved,
-- languages actively used.
+Show four verified values: public GitHub repositories, merged authored PRs, LeetCode problems solved, and Codeforces contest rating. Fetch current values server-side where reliable, retaining dated verified snapshots for upstream failures. Never use counts copied from the reference artwork.
 
 Do not show rank/percentile unless verified, current and actually useful.
 
 ## Primary profiles
 
-Show three primary profile cards initially.
-Recommended ordering based on relevance:
-
-1. GitHub
-2. LeetCode / primary problem-solving platform
-3. Kaggle or another platform that has meaningful work
+Show four primary profile cards: GitHub, LeetCode, Codeforces, and Kaggle. Each live value comes from that platform's public endpoint when available, with a dated verified fallback. Secondary platforms stay linked without fabricated metrics.
+Order: GitHub, LeetCode, Kaggle, Codeforces.
 
 Each card contains:
 
 - platform and handle,
 - why it matters,
 - one small visualization,
-- 2–3 verified metrics,
+- only relevant verified metrics,
 - link.
 
 Do not recreate the entire platform UI.
 
 ## Secondary profiles
 
-Use a lightweight horizontal list/chips for HackerRank, Codeforces or others rather than another dense grid.
+Use linked cards for CodeChef, HackerRank, GeeksforGeeks, Hugging Face, and Tableau Public. As Kavya requested, CodeChef, HackerRank, GeeksforGeeks, and Tableau show no numbers without a dependable public metrics feed.
 
 ## GitHub activity
 
-One clean contribution/activity section is enough.
-Do not duplicate contribution heatmaps in multiple cards.
+The GitHub card shows a compact 26-week authored PR preview. A separate 52-week ribbon beneath the four cards gives the broader timeline. Both use authored PR dates, not invented activity.
 
 ## Languages
 
@@ -76,3 +62,7 @@ Prefer `Used recently in` / project-backed language evidence over arbitrary skil
 - Stats become 2×2.
 - Cards stack.
 - Contribution graph scrolls horizontally or uses a mobile-specific condensed view.
+
+## Visual composition
+
+At the 1672×941 reference viewport, the warm dusk desk hero, four-value strip, four graph cards, and PR activity ribbon are visible together. The hero image is the main light source; cards use quiet, dark material layers. A small command search trigger sits in the header. Hover and route motion remain subtle and obey reduced-motion settings.

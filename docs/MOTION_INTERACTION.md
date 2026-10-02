@@ -64,3 +64,7 @@ Under `prefers-reduced-motion: reduce`:
 - replace video autoplay with poster,
 - simplify layout transitions,
 - keep state changes immediate and understandable.
+
+# Current live motion
+
+The page-specific hero images drift slowly without moving text. Home's sphere has a restrained ambient motion. The Open Source organization ribbon moves slowly, pauses on hover, and stops for `prefers-reduced-motion`. PR timelines open on pointer hover or keyboard focus; clicking pins a timeline until it is clicked again. Mobile visitors use tap. The corner live dot pulses gently and also respects reduced motion.

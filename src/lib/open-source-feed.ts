@@ -101,13 +101,25 @@ export async function getOpenSourceFeed(): Promise<OpenSourceFeed> {
   const search =
     "search/issues?q=author%3AKatalKavya96+is%3Apr&sort=created&order=desc&per_page=100";
   const first = await githubGet<GitHubSearchResponse>(`${search}&page=1`);
-  const second =
-    first && (first.total_count ?? 0) > 100
-      ? await githubGet<GitHubSearchResponse>(`${search}&page=2`)
-      : null;
+  const pageCount = first
+    ? Math.min(10, Math.ceil((first.total_count ?? 0) / 100))
+    : 0;
+  const remaining =
+    pageCount > 1
+      ? await Promise.all(
+          Array.from({ length: pageCount - 1 }, (_, index) =>
+            githubGet<GitHubSearchResponse>(`${search}&page=${index + 2}`),
+          ),
+        )
+      : [];
   const live = Boolean(first?.items?.length);
   const source: GitHubSearchItem[] = live
-    ? [...(first?.items ?? []), ...(second?.items ?? [])]
+    ? [
+        first!,
+        ...remaining.filter((page): page is GitHubSearchResponse =>
+          Boolean(page),
+        ),
+      ].flatMap((page) => page.items ?? [])
     : pullSnapshot.map((item) => ({
         number: item.number,
         title: item.title,

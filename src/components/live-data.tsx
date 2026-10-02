@@ -64,9 +64,16 @@ export function LiveStatus({ compact = false }: { compact?: boolean }) {
   );
 }
 
-export function RepoPulse({ slug }: { slug: string }) {
+export function RepoPulse({
+  slug,
+  pushedAt: initialPushedAt,
+}: {
+  slug: string;
+  pushedAt?: string;
+}) {
   const activity = useLiveData()?.repositories[slug];
-  const pushedAt = activity?.pushedAt ?? repositoryPushSnapshot[slug];
+  const pushedAt =
+    activity?.pushedAt ?? initialPushedAt ?? repositoryPushSnapshot[slug];
   if (!pushedAt) return <span className="repo-pulse">Public repository</span>;
   const date = new Date(pushedAt).toLocaleDateString("en-US", {
     month: "short",

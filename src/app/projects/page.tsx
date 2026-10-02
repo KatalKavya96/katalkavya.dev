@@ -39,6 +39,7 @@ export default async function ProjectsPage({
   return (
     <LiveDataProvider>
       <main id="main" className="projects-page expansive-page">
+        <LiveStatus compact />
         <section className="image-hero projects-hero">
           <Image
             className="hero-image"
@@ -65,7 +66,6 @@ export default async function ProjectsPage({
                 Open source work
               </ButtonLink>
             </div>
-            <LiveStatus compact />
           </div>
         </section>
         <section
@@ -111,7 +111,10 @@ export default async function ProjectsPage({
                   </span>
                   <h3>{flagship.title}</h3>
                   <p>{flagship.description}</p>
-                  <RepoPulse slug={flagship.slug} />
+                  <RepoPulse
+                    slug={flagship.slug}
+                    pushedAt={flagship.pushedAt}
+                  />
                   <div className="feature-facts">
                     {flagship.tags.slice(0, 4).map((tag) => (
                       <span key={tag}>{tag}</span>

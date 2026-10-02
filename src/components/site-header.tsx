@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navItems } from "@/content/site";
+import { SearchCommand } from "@/components/search-command";
 
 export function SiteHeader() {
   const pathname = usePathname();
@@ -27,6 +28,7 @@ export function SiteHeader() {
             </Link>
           ))}
         </nav>
+        <SearchCommand />
         <Link className="header-cta" href="/contact">
           Let&apos;s connect <span aria-hidden="true">↗</span>
         </Link>

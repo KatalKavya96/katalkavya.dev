@@ -3,3 +3,6 @@ node_modules
 out
 .DS_Store
 *.tsbuildinfo
+.env
+.env.local
+.env.*.local

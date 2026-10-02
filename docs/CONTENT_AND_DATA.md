@@ -124,3 +124,11 @@ If data is missing:
 - hide the field,
 - do not fill with fake values,
 - do not display "0" unless zero is meaningful and confirmed.
+
+## 9. Current production adapters and curation
+
+`src/lib/curation.ts` reads ordered projects and domains from `src/content/curation.json`, preferring the current GitHub Contents version when configured. Repository names, descriptions, topics, language, creation date, and last push come from GitHub. Curated editorial aliases and verified repository media may override display details where helpful. New public repositories created after the cutoff appear automatically as experiments; the private editor can assign domains, reorder, hide, and restore them. GitHub metadata failures fall back to the verified local entries.
+
+`src/lib/open-source-feed.ts` groups authored GitHub PR search results by external repository, newest first, including open, merged, and closed states. It uses `src/content/pr-snapshot.json` as a dated fallback. Organization ribbon entries use verified GitHub organization owners and avatars.
+
+`src/lib/live-data.ts` supplies live GitHub, Codeforces, LeetCode, and Kaggle values. The LeetCode GraphQL endpoint is public but undocumented and may fail; its dated snapshot is a fallback. No live count is shown for other linked platforms until a reliable source is available. Credentials remain server-only.

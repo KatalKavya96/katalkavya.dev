@@ -4,6 +4,7 @@ import {
   fetchRepository,
   getCuration,
   getCuratedProjects,
+  getNewPublicRepositories,
   parseRepository,
   saveCuration,
   validDomains,
@@ -60,7 +61,7 @@ export async function POST(request: NextRequest) {
       { status: 400 },
     );
   const curation = await getCuration();
-  const index = curation.projects.findIndex(
+  let index = curation.projects.findIndex(
     (project) => project.repository.toLowerCase() === repository.toLowerCase(),
   );
   const hiddenIndex = curation.hiddenRepositories.findIndex(
@@ -83,18 +84,62 @@ export async function POST(request: NextRequest) {
       });
     if (hiddenIndex >= 0) curation.hiddenRepositories.splice(hiddenIndex, 1);
   } else if (body.action === "domains") {
-    if (index < 0)
-      return NextResponse.json(
-        { error: "Add this repository before editing domains" },
-        { status: 404 },
-      );
+    if (index < 0) {
+      const snapshot = await fetchRepository(repository);
+      if (!snapshot)
+        return NextResponse.json(
+          { error: "GitHub repository could not be verified" },
+          { status: 502 },
+        );
+      curation.projects.push({
+        repository,
+        domains: [],
+        addedAt: snapshot.createdAt,
+        snapshot,
+      });
+      index = curation.projects.length - 1;
+    }
     curation.projects[index].domains = validDomains(body.domains);
   } else if (body.action === "move") {
-    if (index < 0)
-      return NextResponse.json(
-        { error: "Add this repository before reordering" },
-        { status: 404 },
-      );
+    const incoming = await getNewPublicRepositories(curation.autoAddAfter);
+    const registered = new Set(
+      curation.projects.map((project) => project.repository.toLowerCase()),
+    );
+    const hidden = new Set(
+      curation.hiddenRepositories.map((item) => item.toLowerCase()),
+    );
+    for (const entry of incoming.sort((a, b) =>
+      b.snapshot.createdAt.localeCompare(a.snapshot.createdAt),
+    )) {
+      const key = entry.repository.toLowerCase();
+      if (registered.has(key) || hidden.has(key)) continue;
+      curation.projects.push({
+        repository: entry.repository,
+        domains: ["Experiment"],
+        addedAt: entry.snapshot.createdAt,
+        snapshot: entry.snapshot,
+      });
+      registered.add(key);
+    }
+    index = curation.projects.findIndex(
+      (project) =>
+        project.repository.toLowerCase() === repository.toLowerCase(),
+    );
+    if (index < 0) {
+      const snapshot = await fetchRepository(repository);
+      if (!snapshot)
+        return NextResponse.json(
+          { error: "GitHub repository could not be verified" },
+          { status: 502 },
+        );
+      curation.projects.push({
+        repository,
+        domains: ["Experiment"],
+        addedAt: snapshot.createdAt,
+        snapshot,
+      });
+      index = curation.projects.length - 1;
+    }
     const to =
       index +
       (body.direction === "up" ? -1 : body.direction === "down" ? 1 : 0);

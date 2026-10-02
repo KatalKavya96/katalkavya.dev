@@ -11,6 +11,7 @@ export default async function HomePage() {
   return (
     <LiveDataProvider>
       <main id="main" className="viewport-page home-page">
+        <LiveStatus compact />
         <section className="home-hero page-width">
           <div className="home-copy">
             {projects[0] && (
@@ -47,7 +48,6 @@ export default async function HomePage() {
                 GitHub <span aria-hidden="true">↗</span>
               </a>
             </div>
-            <LiveStatus compact />
           </div>
           <div className="sphere-scene" aria-hidden="true">
             <div className="sphere-halo" />

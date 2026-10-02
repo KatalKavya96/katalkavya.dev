@@ -22,8 +22,14 @@ export type LiveSnapshot = {
     publicRepos: number;
     followers: number;
     mergedPulls: number | null;
+    weeklyActivity: number[] | null;
   } | null;
-  codeforces: { rating: number; rank: string; lastOnline: string } | null;
+  codeforces: {
+    rating: number;
+    rank: string;
+    lastOnline: string;
+    ratingHistory: number[] | null;
+  } | null;
   leetcode: {
     solved: number;
     easy: number;
@@ -31,6 +37,7 @@ export type LiveSnapshot = {
     hard: number;
   } | null;
   kaggle: { datasets: number; latestDataset: string | null } | null;
+  huggingFace: { models: number; datasets: number; spaces: number } | null;
 };
 
 type GitHubRepository = {
@@ -47,6 +54,7 @@ type GitHubPull = {
 };
 type GitHubUser = { public_repos?: number; followers?: number };
 type GitHubSearch = { total_count?: number };
+type GitHubEvent = { created_at?: string };
 type CodeforcesResponse = {
   status?: string;
   result?: Array<{
@@ -54,6 +62,10 @@ type CodeforcesResponse = {
     rank?: string;
     lastOnlineTimeSeconds?: number;
   }>;
+};
+type CodeforcesRatingResponse = {
+  status?: string;
+  result?: Array<{ newRating?: number; ratingUpdateTimeSeconds?: number }>;
 };
 type LeetCodeResponse = {
   data?: {
@@ -65,6 +77,19 @@ type LeetCodeResponse = {
   };
 };
 type KaggleDataset = { title?: string; ownerRef?: string };
+type HuggingFaceRepo = { id?: string };
+
+function recentWeeks(events: GitHubEvent[]): number[] {
+  const now = Date.now();
+  const weeks = Array.from({ length: 12 }, () => 0);
+  for (const event of events) {
+    const date = Date.parse(event.created_at ?? "");
+    if (!Number.isFinite(date)) continue;
+    const index = 11 - Math.floor((now - date) / (7 * 24 * 60 * 60 * 1000));
+    if (index >= 0 && index < weeks.length) weeks[index] += 1;
+  }
+  return weeks;
+}
 
 async function readJson<T>(url: string, github = false): Promise<T | null> {
   const headers: Record<string, string> = { Accept: "application/json" };
@@ -124,9 +149,14 @@ export async function getLiveSnapshot(): Promise<LiveSnapshot> {
     pullResults,
     githubUser,
     githubSearch,
+    githubEvents,
     codeforces,
+    codeforcesRatings,
     leetcode,
     kaggle,
+    hfModels,
+    hfDatasets,
+    hfSpaces,
   ] = await Promise.all([
     Promise.all(
       projects.map((project) =>
@@ -146,12 +176,28 @@ export async function getLiveSnapshot(): Promise<LiveSnapshot> {
       "https://api.github.com/search/issues?q=author%3AKatalKavya96+is%3Apr+is%3Amerged&per_page=1",
       true,
     ),
+    readJson<GitHubEvent[]>(
+      "https://api.github.com/users/KatalKavya96/events/public?per_page=100",
+      true,
+    ),
     readJson<CodeforcesResponse>(
       "https://codeforces.com/api/user.info?handles=KavyaKatal09",
+    ),
+    readJson<CodeforcesRatingResponse>(
+      "https://codeforces.com/api/user.rating?handle=KavyaKatal09",
     ),
     readLeetCode(),
     readJson<KaggleDataset[]>(
       "https://www.kaggle.com/api/v1/datasets/list?user=kavyakatal&pageSize=100",
+    ),
+    readJson<HuggingFaceRepo[]>(
+      "https://huggingface.co/api/models?author=katalkavya96&limit=100",
+    ),
+    readJson<HuggingFaceRepo[]>(
+      "https://huggingface.co/api/datasets?author=katalkavya96&limit=100",
+    ),
+    readJson<HuggingFaceRepo[]>(
+      "https://huggingface.co/api/spaces?author=katalkavya96&limit=100",
     ),
   ]);
 
@@ -209,6 +255,9 @@ export async function getLiveSnapshot(): Promise<LiveSnapshot> {
               typeof githubSearch?.total_count === "number"
                 ? githubSearch.total_count
                 : null,
+            weeklyActivity: Array.isArray(githubEvents)
+              ? recentWeeks(githubEvents)
+              : null,
           }
         : null,
     codeforces:
@@ -222,6 +271,14 @@ export async function getLiveSnapshot(): Promise<LiveSnapshot> {
             lastOnline: new Date(
               cfUser.lastOnlineTimeSeconds * 1000,
             ).toISOString(),
+            ratingHistory:
+              codeforcesRatings?.status === "OK" &&
+              Array.isArray(codeforcesRatings.result)
+                ? codeforcesRatings.result
+                    .filter((item) => typeof item.newRating === "number")
+                    .slice(-12)
+                    .map((item) => item.newRating!)
+                : null,
           }
         : null,
     leetcode: ["All", "Easy", "Medium", "Hard"].every(
@@ -240,5 +297,15 @@ export async function getLiveSnapshot(): Promise<LiveSnapshot> {
           latestDataset: publicDatasets[0]?.title ?? null,
         }
       : null,
+    huggingFace:
+      Array.isArray(hfModels) &&
+      Array.isArray(hfDatasets) &&
+      Array.isArray(hfSpaces)
+        ? {
+            models: hfModels.length,
+            datasets: hfDatasets.length,
+            spaces: hfSpaces.length,
+          }
+        : null,
   };
 }

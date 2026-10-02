@@ -58,14 +58,11 @@ Diff stats are optional and only if sourced reliably.
 
 ## Contribution timeline
 
-Use a spacious vertical or horizontal narrative timeline of meaningful milestones.
-Do not render every PR.
-Group low-level changes into chapters when appropriate.
+Show six repository cards by default and offer access to the remaining repositories. Each card shows the latest raised PR. Hover or keyboard focus opens a scrollable newest-first timeline of authored PRs with open, merged, or closed status; click pins it open for inspection. Links lead directly to each PR. Mobile uses tap to open and pin.
 
 ## Organizations
 
-Logo/name list with a sentence describing the kind of work done.
-Do not create an arbitrary "company wall".
+Use an automatically updating, slowly panning ribbon of verified organization owners from the authored PR feed. Each organization appears once in the track, even when the feed refreshes. Keep the label in a separate fixed-width column so moving names never pass beneath it. Pan only when the list exceeds the available width; pause on hover or keyboard focus and stop under reduced-motion preference.
 
 ## Background floating PR idea
 

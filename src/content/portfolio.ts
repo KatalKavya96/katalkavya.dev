@@ -12,6 +12,7 @@ export type Project = {
   sourceUrl: string;
   evidenceUrl?: string;
   context?: string;
+  pushedAt?: string;
 };
 
 export type Contribution = {
@@ -289,7 +290,7 @@ export const profileMetricsSnapshot = {
   lastVerified: "2026-10-01",
   github: { publicRepos: 104, followers: 44 },
   codeforces: { rating: 970, rank: "newbie" },
-  leetcode: { solved: 866, hard: 143 },
+  leetcode: { solved: 866, easy: 286, medium: 437, hard: 143 },
   kaggle: { datasets: 9 },
 } as const;
 

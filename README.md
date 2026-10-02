@@ -13,7 +13,7 @@ The design references are stored in `references/`. They define direction, not li
 - Next.js App Router
 - React + TypeScript (strict)
 - CSS variables and custom responsive CSS
-- Typed local content; external data adapters may be added when real sources are supplied
+- Typed content with server-side GitHub, Codeforces, LeetCode, and Kaggle adapters
 
 ## Run locally
 
@@ -22,7 +22,17 @@ npm install
 npm run dev
 ```
 
-The four primary pages use a one-screen desktop composition; mobile layouts stack for readability. All routes currently have `noindex` metadata while personal role details, contact email, resume, and project media are being collected.
+The primary pages use rich editorial heroes and scrollable project collections. Mobile layouts stack for readability. All routes currently have `noindex` metadata while personal role details, contact email, and resume are being collected.
+
+## Live data and private project editor
+
+Copy `.env.example` to `.env.local` and set the server-only values there. Never commit `.env.local` or paste tokens into a public issue.
+
+`GITHUB_TOKEN` enables reliable GitHub project, PR, and profile reads. Without it, the site uses dated verified public snapshots when GitHub blocks anonymous requests. Codeforces, LeetCode, and Kaggle metrics update from their public endpoints when available, with dated verified values as fallback. Other linked coding platforms do not show invented metrics.
+
+`/admin` is a private project editor. Create a GitHub OAuth App for the local callback `http://localhost:3000/api/auth/github/callback`, and another for the deployed domain's callback. Set its client ID and secret, plus a random `AUTH_SECRET` of at least 32 characters. Only Kavya's verified GitHub account ID is permitted. Set `GITHUB_CONTENT_TOKEN` to a fine-grained token scoped to this portfolio repository with **Contents: read/write** and **Metadata: read**. The OAuth token verifies the signed-in user; the repository-scoped token remains on the server and saves curation to `src/content/curation.json` through GitHub's Contents API.
+
+In the editor, choose from your GitHub repositories or paste a public repository URL, assign up to four domains, reorder, remove, and restore cards. New public repositories on `KatalKavya96` created after the curation cutoff appear automatically. Manually added organization repositories can be curated in the same editor. Public visitors cannot access these controls.
 
 Use current stable package versions when the project is initialized and commit the lockfile.
 

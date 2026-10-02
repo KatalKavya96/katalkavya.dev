@@ -57,7 +57,7 @@ Use Kavya's strongest confirmed project as the first full case study after conte
 
 - unique coding desk hero
 - profile data model
-- three primary profile cards
+- four primary profile cards
 - GitHub activity visualization
 - lightweight secondary-profile links
 

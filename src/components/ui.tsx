@@ -139,7 +139,6 @@ export function ProjectVisual({ project }: { project: Project }) {
             <Image src={project.mark} alt="" width={34} height={34} />
           </span>
         )}
-        <span className="media-source">Project repository media</span>
       </div>
     );
   }
@@ -174,7 +173,7 @@ export function ProjectCard({ project }: { project: Project }) {
           <span>
             {project.number} / {project.category}
           </span>
-          <RepoPulse slug={project.slug} />
+          <RepoPulse slug={project.slug} pushedAt={project.pushedAt} />
         </div>
         <h3>{project.title}</h3>
         <p>{project.description}</p>

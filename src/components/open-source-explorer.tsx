@@ -1,7 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import type {
   OpenSourceFeed,
   PullGroup,
@@ -25,41 +25,68 @@ function PullStatus({ pull }: { pull: PublicPull }) {
 }
 
 function OrganizationRibbon({ feed }: { feed: OpenSourceFeed }) {
-  const organizations = feed.organizations;
+  const seen = new Set<string>();
+  const organizations = feed.organizations.filter((organization) => {
+    const login = organization.login.toLowerCase();
+    if (seen.has(login)) return false;
+    seen.add(login);
+    return true;
+  });
+  const windowRef = useRef<HTMLDivElement>(null);
+  const trackRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const windowElement = windowRef.current;
+    const trackElement = trackRef.current;
+    if (!windowElement || !trackElement) return;
+
+    const measure = () => {
+      const travel = Math.max(
+        0,
+        trackElement.scrollWidth - windowElement.clientWidth,
+      );
+      trackElement.style.setProperty("--ribbon-travel", `${-travel}px`);
+      trackElement.style.setProperty(
+        "--ribbon-duration",
+        `${Math.max(18, Math.min(48, travel / 24))}s`,
+      );
+      trackElement.classList.toggle("can-pan", travel > 8);
+    };
+    const observer = new ResizeObserver(measure);
+    observer.observe(windowElement);
+    observer.observe(trackElement);
+    measure();
+    return () => observer.disconnect();
+  }, [organizations.length]);
+
   if (!organizations.length) return null;
-  const item = (
-    organization: (typeof organizations)[number],
-    index: number,
-    clone: boolean,
-  ) => (
-    <a
-      key={`${organization.login}-${index}-${clone}`}
-      href={organization.url}
-      target="_blank"
-      rel="noopener noreferrer"
-      tabIndex={clone ? -1 : undefined}
-      aria-hidden={clone ? true : undefined}
-    >
-      <Image
-        src={organization.avatarUrl}
-        alt=""
-        width={25}
-        height={25}
-        unoptimized
-      />
-      <span>{organization.login}</span>
-    </a>
-  );
   return (
     <div
       className="organization-ribbon"
       aria-label="Organizations with public pull requests by Kavya"
     >
-      <span className="ribbon-label">Contributed to</span>
-      <div className="ribbon-window">
-        <div className="ribbon-track">
-          {organizations.map((org, i) => item(org, i, false))}
-          {organizations.map((org, i) => item(org, i, true))}
+      <div className="ribbon-inner page-width">
+        <span className="ribbon-label">Contributed to</span>
+        <div className="ribbon-window" ref={windowRef}>
+          <div className="ribbon-track" ref={trackRef}>
+            {organizations.map((organization) => (
+              <a
+                key={organization.login.toLowerCase()}
+                href={organization.url}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <Image
+                  src={organization.avatarUrl}
+                  alt=""
+                  width={25}
+                  height={25}
+                  unoptimized
+                />
+                <span>{organization.login}</span>
+              </a>
+            ))}
+          </div>
         </div>
       </div>
     </div>
@@ -236,11 +263,12 @@ export function OpenSourceExplorer({
               pinned={pinned === group.repository}
               onHover={() => setHovered(group.repository)}
               onLeave={() => setHovered(null)}
-              onToggle={() =>
+              onToggle={() => {
+                setHovered(null);
                 setPinned((current) =>
                   current === group.repository ? null : group.repository,
-                )
-              }
+                );
+              }}
             />
           ))}
         </div>

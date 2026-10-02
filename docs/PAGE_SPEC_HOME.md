@@ -36,7 +36,7 @@ Use navigation themes until Kavya's technical categories are confirmed: Build, C
 
 ## Selected work
 
-Show up to three verified featured items. Development-only sample cards demonstrate the layout. The production site omits them until real projects are supplied.
+Show six verified public projects in a three-column desktop grid and stacked mobile cards. The first row gives the immediate proof; further cards may continue below the viewport. Curation order comes from the private editor.
 
 Use live-feeling project visuals, not generic abstract thumbnails.
 

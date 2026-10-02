@@ -21,13 +21,13 @@ Only expose the most important routes in the primary navigation. `Contact` may b
 
 Purpose: establish identity and send visitors toward strongest proof.
 
-The current desktop composition uses one viewport: hero and three selected work cards. Other routes carry deeper proof. Mobile stacks the same content vertically.
+The page shows a compact hero and six selected public projects. The collection may continue below the desktop viewport; mobile stacks the cards.
 
 ## Projects
 
 Purpose: curated work, filterable by domain.
 
-The current desktop composition uses one viewport: hero, flagship project, and three further selected projects. Filters and deeper case-study content follow once full media and role details are available.
+The page shows a flagship project followed by all visible curated repositories. Domain filters use the URL query and the collection scrolls naturally.
 
 ## Project detail
 
@@ -52,13 +52,13 @@ Not every project needs every module.
 
 Purpose: show contribution quality and progression, not raw counts.
 
-The current desktop composition uses one viewport: hero, a dated verified PR snapshot, and three linked contributions. A fuller timeline may follow later as a dedicated deeper view.
+The page groups authored PRs by repository, shows six cards initially, and exposes additional repositories on demand. Each card opens a PR timeline; a ribbon lists verified organization owners.
 
 ## Coding Profiles
 
 Purpose: show consistent coding/problem-solving practice without turning into a score board.
 
-The current desktop composition uses one viewport: hero, three primary profile cards, and a compact secondary link row. Metrics and visualizations wait for independently verified platform data.
+At the reference desktop viewport, the desk hero, four verified summary values, four primary profile cards, and authored PR activity ribbon form the first screen. Additional linked platform cards follow below. Mobile stacks the cards and keeps the same verified content readable.
 
 ## Lab
 
@@ -82,3 +82,7 @@ Use a narrative timeline, not a resume clone.
 
 Purpose: human context, working style, interests and current direction.
 Keep concise.
+
+# Current live collections
+
+Home shows six curated GitHub projects; Projects shows the complete collection with URL-based domain filters. Open Source groups authored pull requests by repository and exposes a scrollable per-card history. Coding Profiles emphasizes four platforms with verified numeric data and keeps other supplied profiles as linked destinations. `/admin` is an unlisted, owner-only route for project curation and is never a primary navigation destination.

@@ -284,7 +284,7 @@ export function AdminProjects() {
                 </button>
                 <button
                   type="button"
-                  disabled={busy || !data.storageReady || !entry}
+                  disabled={busy || !data.storageReady}
                   onClick={() =>
                     void mutate({
                       action: "domains",

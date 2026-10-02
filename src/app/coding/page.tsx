@@ -1,44 +1,67 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import { ButtonLink, Eyebrow } from "@/components/ui";
+import { LiveDataProvider, LiveStatus } from "@/components/live-data";
 import {
-  LiveDataProvider,
-  LiveStatus,
-  GitHubLiveMetrics,
-  CodeforcesLiveMetrics,
-  LeetCodeLiveMetrics,
-  KaggleLiveMetrics,
-} from "@/components/live-data";
+  CodingMetricsStrip,
+  PrimaryProfileCard,
+  SecondaryProfileCard,
+} from "@/components/coding-profile-cards";
+import { brandIcons } from "@/content/brand-icons";
 import { profiles } from "@/content/portfolio";
+import { getOpenSourceFeed } from "@/lib/open-source-feed";
 
 export const metadata: Metadata = {
   title: "Coding Profiles",
   description:
     "Verified public coding, problem-solving, and AI/data profiles for Kavya Katal.",
 };
+export const dynamic = "force-dynamic";
 
-const featuredPlatforms = ["GitHub", "LeetCode", "Codeforces", "Kaggle"];
+const featuredPlatforms = ["GitHub", "LeetCode", "Kaggle", "Codeforces"];
 const featured = featuredPlatforms.map((name) =>
   profiles.find((profile) => profile.platform === name)!,
 );
 const otherProfiles = profiles.filter(
   (profile) => !featuredPlatforms.includes(profile.platform),
 );
-const brandIcons: Record<string, string> = {
-  GitHub: "/media/github.svg",
-  LeetCode: "/media/leetcode.svg",
-  Codeforces: "/media/codeforces.svg",
-  Kaggle: "/media/kaggle.svg",
-};
+const heroPlatforms = [
+  "LeetCode",
+  "GitHub",
+  "Kaggle",
+  "HackerRank",
+  "Codeforces",
+];
+const heroProfiles = heroPlatforms.map((name) =>
+  profiles.find((profile) => profile.platform === name)!,
+);
 
-export default function CodingPage() {
+export default async function CodingPage() {
+  const feed = await getOpenSourceFeed();
+  const counts = new Map<string, number>();
+  for (const group of feed.groups)
+    for (const pull of group.pulls) {
+      const day = pull.createdAt.slice(0, 10);
+      counts.set(day, (counts.get(day) ?? 0) + 1);
+    }
+  const today = new Date();
+  today.setUTCHours(0, 0, 0, 0);
+  const activity = Array.from({ length: 364 }, (_, index) => {
+    const day = new Date(today);
+    day.setUTCDate(day.getUTCDate() - 363 + index);
+    const date = day.toISOString().slice(0, 10);
+    return { date, count: counts.get(date) ?? 0 };
+  });
+  const totalActivity = activity.reduce((sum, day) => sum + day.count, 0);
+
   return (
     <LiveDataProvider>
-      <main id="main" className="viewport-page coding-page">
+      <main id="main" className="coding-page coding-showcase-page">
+        <LiveStatus compact />
         <section className="image-hero coding-hero">
           <Image
             className="hero-image"
-            src="/media/coding-desk.webp"
+            src="/media/coding-desk-v2.webp"
             alt=""
             fill
             priority
@@ -47,9 +70,9 @@ export default function CodingPage() {
           <div className="page-width image-hero-inner">
             <Eyebrow accent="blue">Coding profiles</Eyebrow>
             <h1>
-              Code. Solve.
+              Code, solve,
               <br />
-              <span>Keep learning.</span>
+              <span>build, grow.</span>
             </h1>
             <p>
               Public code, problem-solving practice, and AI/data explorations
@@ -68,25 +91,33 @@ export default function CodingPage() {
                 Explore profiles
               </ButtonLink>
             </div>
-            <LiveStatus compact />
           </div>
           <div
             className="hero-proof proof-coding"
             aria-label="Public coding platforms"
           >
-            {featured.map((profile) => (
+            {heroProfiles.map((profile) => (
               <a
                 key={profile.platform}
+                className={`hero-${profile.platform.toLowerCase()}`}
                 href={profile.url}
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image
-                  src={brandIcons[profile.platform]}
-                  alt=""
-                  width={27}
-                  height={27}
-                />
+                {profile.platform === "Codeforces" ? (
+                  <span className="codeforces-bars" aria-hidden="true">
+                    <i />
+                    <i />
+                    <i />
+                  </span>
+                ) : (
+                  <Image
+                    src={brandIcons[profile.platform]}
+                    alt=""
+                    width={27}
+                    height={27}
+                  />
+                )}
                 <span>
                   <strong>{profile.platform}</strong>
                   <small>{profile.category}</small>
@@ -96,97 +127,75 @@ export default function CodingPage() {
             ))}
           </div>
         </section>
-        <div className="coding-proof-strip">
-          <div className="page-width coding-proof-inner">
-            <span>
-              <Image src="/media/github.svg" alt="" width={19} height={19} />
-              <strong>GitHub</strong>
-              <GitHubLiveMetrics />
-            </span>
-            <span>
-              <Image
-                src="/media/codeforces.svg"
-                alt=""
-                width={19}
-                height={19}
-              />
-              <strong>Codeforces</strong>
-              <CodeforcesLiveMetrics />
-            </span>
-            <span>
-              <strong>{profiles.length}</strong>
-              <small>Linked public platforms</small>
-            </span>
-          </div>
-        </div>
+        <CodingMetricsStrip />
         <section
-          className="viewport-work page-width"
           id="profiles"
+          className="page-width coding-showcase"
           aria-labelledby="profiles-title"
         >
-          <div className="viewport-section-head">
+          <div className="coding-showcase-head">
             <div>
-              <Eyebrow accent="blue">Public profiles</Eyebrow>
-              <h2 id="profiles-title">Public work, across platforms.</h2>
+              <h2 id="profiles-title">
+                <i aria-hidden="true" />
+                Primary Profiles
+              </h2>
+              <p>The platforms where I code, solve, learn, and contribute.</p>
             </div>
-            <span className="section-meta">
-              Live metrics where official APIs are available
-            </span>
+            <a href="#more-profiles">
+              All profiles <span aria-hidden="true">↗</span>
+            </a>
           </div>
-          <div className="profile-grid">
+          <div className="profile-showcase-grid">
             {featured.map((profile, index) => (
-              <a
+              <PrimaryProfileCard
                 key={profile.platform}
-                className="profile-card"
-                href={profile.url}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <span className="profile-index">
-                  0{index + 1} / {profile.category}
-                </span>
-                <span className="profile-mark" aria-hidden="true">
-                  <Image
-                    src={brandIcons[profile.platform]}
-                    alt=""
-                    width={26}
-                    height={26}
-                  />
-                </span>
-                <strong>{profile.platform}</strong>
-                <span className="profile-handle">{profile.handle}</span>
-                <span className="profile-data-panel">
-                  {profile.platform === "GitHub" ? (
-                    <GitHubLiveMetrics />
-                  ) : profile.platform === "Codeforces" ? (
-                    <CodeforcesLiveMetrics />
-                  ) : profile.platform === "LeetCode" ? (
-                    <LeetCodeLiveMetrics />
-                  ) : (
-                    <KaggleLiveMetrics />
-                  )}
-                </span>
-                <p>{profile.description}</p>
-                <span className="profile-visit">
-                  View profile <b aria-hidden="true">↗</b>
-                </span>
-              </a>
+                profile={profile}
+                index={index}
+                pullActivity={
+                  profile.platform === "GitHub"
+                    ? activity.slice(-182)
+                    : undefined
+                }
+              />
             ))}
           </div>
-          <div className="profile-secondary">
-            <span>More places to explore</span>
-            <div>
-              {otherProfiles.map((profile) => (
-                <a
-                  key={profile.platform}
-                  href={profile.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                >
-                  {profile.platform} <span aria-hidden="true">↗</span>
-                </a>
+          <div
+            className="coding-activity"
+            aria-label={`${totalActivity} authored open-source pull requests in the last 52 weeks`}
+          >
+            <div className="activity-label">
+              <Image src="/media/github.svg" alt="" width={30} height={30} />
+              <span>
+                <strong>Open-source PR activity</strong>
+                <small>Authored PRs over the past year</small>
+              </span>
+            </div>
+            <div
+              className="activity-calendar"
+              role="img"
+              aria-label={`${totalActivity} authored open-source pull requests in the last 52 weeks`}
+            >
+              {activity.map((day) => (
+                <i
+                  key={day.date}
+                  className={`level-${Math.min(day.count, 4)}`}
+                  title={`${day.date}: ${day.count} authored PR${day.count === 1 ? "" : "s"}`}
+                />
               ))}
             </div>
+            <div className="activity-total">
+              <strong>{totalActivity}</strong>
+              <small>in the past year</small>
+            </div>
+          </div>
+          <div id="more-profiles" className="coding-more-head">
+            <Eyebrow accent="blue">More profiles</Eyebrow>
+            <h2>Practice across platforms.</h2>
+          </div>
+          <div className="secondary-profile-grid">
+            {otherProfiles.map((profile) => (
+              <SecondaryProfileCard key={profile.platform} profile={profile} />
+            ))}
           </div>
         </section>
       </main>
