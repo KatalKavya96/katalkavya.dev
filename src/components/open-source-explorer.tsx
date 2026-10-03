@@ -61,12 +61,15 @@ function OrganizationRibbon({ feed }: { feed: OpenSourceFeed }) {
 
   if (!organizations.length) return null;
   return (
-    <div
+    <section
       className="organization-ribbon"
-      aria-label="Organizations with public pull requests by Kavya"
+      aria-labelledby="organizations-title"
     >
-      <div className="ribbon-inner page-width">
-        <span className="ribbon-label">Contributed to</span>
+      <div className="page-width ribbon-inner">
+        <div className="ribbon-heading">
+          <span>PUBLIC WORK</span>
+          <h2 id="organizations-title">Organizations I&apos;ve contributed to</h2>
+        </div>
         <div className="ribbon-window" ref={windowRef}>
           <div className="ribbon-track" ref={trackRef}>
             {organizations.map((organization) => (
@@ -76,20 +79,22 @@ function OrganizationRibbon({ feed }: { feed: OpenSourceFeed }) {
                 target="_blank"
                 rel="noopener noreferrer"
               >
-                <Image
-                  src={organization.avatarUrl}
-                  alt=""
-                  width={25}
-                  height={25}
-                  unoptimized
-                />
+                <span className="ribbon-logo">
+                  <Image
+                    src={organization.avatarUrl}
+                    alt=""
+                    width={45}
+                    height={45}
+                    unoptimized
+                  />
+                </span>
                 <span>{organization.login}</span>
               </a>
             ))}
           </div>
         </div>
       </div>
-    </div>
+    </section>
   );
 }
 

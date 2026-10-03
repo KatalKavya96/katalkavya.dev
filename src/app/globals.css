@@ -3254,37 +3254,35 @@ summary:focus-visible {
   font-weight: 700;
 }
 .organization-ribbon {
-  height: 76px;
-  border-block: 1px solid rgba(255, 255, 255, 0.09);
-  background: linear-gradient(90deg, #10151e, #121823 50%, #10151e);
+  padding: 25px 0 22px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  background: #090c12;
   overflow: hidden;
 }
 .ribbon-inner {
-  height: 100%;
-  display: grid;
-  grid-template-columns: 164px minmax(0, 1fr);
-  align-items: center;
-  gap: 22px;
-}
-.ribbon-label {
   display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #ccd2de;
-  font-size: 11px;
-  font-weight: 650;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  white-space: nowrap;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 14px;
 }
-.ribbon-label:before {
-  content: "";
-  width: 6px;
-  height: 6px;
-  flex: none;
-  border-radius: 50%;
-  background: var(--green);
-  box-shadow: 0 0 10px rgba(84, 223, 153, 0.7);
+.ribbon-heading {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 12px;
+}
+.ribbon-heading > span {
+  color: #76948b;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+}
+.ribbon-heading h2 {
+  margin: 0;
+  color: #cbd0dc;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
 }
 .ribbon-window {
   min-width: 0;
@@ -3293,15 +3291,15 @@ summary:focus-visible {
   mask-image: linear-gradient(
     90deg,
     transparent,
-    #000 2%,
-    #000 97%,
+    #000 13%,
+    #000 87%,
     transparent
   );
 }
 .ribbon-track {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: clamp(26px, 3.5vw, 56px);
   width: max-content;
 }
 .ribbon-track.can-pan {
@@ -3312,30 +3310,39 @@ summary:focus-visible {
   animation-play-state: paused;
 }
 .ribbon-track a {
-  display: inline-flex;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 10px;
+  justify-content: center;
+  gap: 7px;
   flex: none;
-  min-width: 142px;
-  min-height: 44px;
-  padding: 6px 12px 6px 7px;
-  border: 1px solid rgba(207, 216, 245, 0.12);
-  border-radius: 11px;
-  background: rgba(23, 29, 41, 0.9);
-  color: #e2e6ef;
-  font-size: 12px;
+  width: 150px;
+  min-height: 74px;
+  color: #aeb5c2;
+  font-size: 10px;
   white-space: nowrap;
-  transition:
-    border-color 0.2s ease,
-    background 0.2s ease;
+  transition: color 0.25s ease, opacity 0.25s ease;
 }
 .ribbon-track a:hover,
 .ribbon-track a:focus-visible {
-  border-color: rgba(170, 192, 226, 0.38);
-  background: #212b38;
+  color: #fff;
 }
-.ribbon-track a img {
-  border-radius: 7px;
+.ribbon-logo {
+  width: 54px;
+  height: 54px;
+  display: grid;
+  place-items: center;
+  border-radius: 13px;
+  background: rgba(255, 255, 255, 0.045);
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.ribbon-track a:hover .ribbon-logo,
+.ribbon-track a:focus-visible .ribbon-logo {
+  background: rgba(255, 255, 255, 0.09);
+  transform: translateY(-2px);
+}
+.ribbon-logo img {
+  border-radius: 8px;
   object-fit: contain;
 }
 @keyframes ribbon-pan {
@@ -3349,7 +3356,7 @@ summary:focus-visible {
   }
 }
 .source-explorer {
-  padding-top: 39px;
+  padding-top: 34px;
   padding-bottom: 100px;
 }
 .explorer-head {
