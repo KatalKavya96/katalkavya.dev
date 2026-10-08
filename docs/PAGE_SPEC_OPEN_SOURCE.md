@@ -44,7 +44,7 @@ Avoid vanity metrics that do not help evaluate engineering work.
 
 ## Featured contributions
 
-Three large contribution cards maximum on initial viewport/section.
+Show six contribution cards by default, arranged in a three-column desktop grid with additional repositories available on demand.
 A card should show:
 
 - project/org,
@@ -62,7 +62,7 @@ Show six repository cards by default and offer access to the remaining repositor
 
 ## Organizations
 
-Use an automatically updating, slowly panning ribbon of verified organization owners from the authored PR feed. Each organization appears once in the track, even when the feed refreshes. Keep the label in a separate fixed-width column so moving names never pass beneath it. Pan only when the list exceeds the available width; pause on hover or keyboard focus and stop under reduced-motion preference.
+Use the 1forge Studio's open logo-carousel rhythm as a reference: a separate heading, generous logo spacing, faded edges, and two circular navigation controls. Each verified organization appears once. The list scrolls by one logo at a time, gently advances and reverses when idle, pauses during pointer or keyboard interaction, and disables automatic motion for reduced-motion visitors. Mobile retains swipe scrolling.
 
 ## Background floating PR idea
 

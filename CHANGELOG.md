@@ -32,3 +32,5 @@ Meaningful website changes are recorded here.
 - Added evidence-backed About, Journey, Lab, and Contact content.
 - Tightened mobile Coding hero spacing and preserved the compact desktop first-screen layout.
 - Reworked the Open Source organization ribbon to remove repeated companies, protect its label from overlap, and pan a single verified list only when needed.
+- Restyled the Open Source logo carousel and PR cards using the 1forge project and Studio as visual references: open logo row, faded edges, circular controls, and calmer proof surfaces.
+- Removed Lab and About from the primary desktop and mobile navigation while keeping their routes available.

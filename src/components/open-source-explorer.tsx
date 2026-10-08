@@ -33,30 +33,66 @@ function OrganizationRibbon({ feed }: { feed: OpenSourceFeed }) {
     return true;
   });
   const windowRef = useRef<HTMLDivElement>(null);
-  const trackRef = useRef<HTMLDivElement>(null);
+  const paused = useRef(false);
+  const direction = useRef<1 | -1>(1);
+  const [canBack, setCanBack] = useState(false);
+  const [canForward, setCanForward] = useState(false);
+
+  const move = (step: -1 | 1) => {
+    const windowElement = windowRef.current;
+    if (!windowElement) return;
+    const item = windowElement.querySelector<HTMLElement>(".ribbon-track a");
+    const track = windowElement.querySelector<HTMLElement>(".ribbon-track");
+    const gap = track
+      ? Number.parseFloat(getComputedStyle(track).columnGap) || 0
+      : 0;
+    windowElement.scrollBy({
+      left: step * ((item?.offsetWidth ?? 150) + gap),
+      behavior: window.matchMedia("(prefers-reduced-motion: reduce)").matches
+        ? "auto"
+        : "smooth",
+    });
+  };
 
   useEffect(() => {
     const windowElement = windowRef.current;
-    const trackElement = trackRef.current;
-    if (!windowElement || !trackElement) return;
-
-    const measure = () => {
-      const travel = Math.max(
-        0,
-        trackElement.scrollWidth - windowElement.clientWidth,
-      );
-      trackElement.style.setProperty("--ribbon-travel", `${-travel}px`);
-      trackElement.style.setProperty(
-        "--ribbon-duration",
-        `${Math.max(18, Math.min(48, travel / 24))}s`,
-      );
-      trackElement.classList.toggle("can-pan", travel > 8);
+    if (!windowElement) return;
+    const trackElement =
+      windowElement.querySelector<HTMLElement>(".ribbon-track");
+    const updateControls = () => {
+      const end = windowElement.scrollWidth - windowElement.clientWidth;
+      setCanBack(windowElement.scrollLeft > 3);
+      setCanForward(windowElement.scrollLeft < end - 3);
     };
-    const observer = new ResizeObserver(measure);
+    const observer = new ResizeObserver(updateControls);
     observer.observe(windowElement);
-    observer.observe(trackElement);
-    measure();
-    return () => observer.disconnect();
+    if (trackElement) observer.observe(trackElement);
+    windowElement.addEventListener("scroll", updateControls, { passive: true });
+    updateControls();
+    const timer = window.setInterval(() => {
+      if (
+        paused.current ||
+        window.matchMedia("(prefers-reduced-motion: reduce)").matches
+      )
+        return;
+      const end = windowElement.scrollWidth - windowElement.clientWidth;
+      if (end < 8) return;
+      if (windowElement.scrollLeft >= end - 3) direction.current = -1;
+      if (windowElement.scrollLeft <= 3) direction.current = 1;
+      const item = windowElement.querySelector<HTMLElement>(".ribbon-track a");
+      const gap = trackElement
+        ? Number.parseFloat(getComputedStyle(trackElement).columnGap) || 0
+        : 0;
+      windowElement.scrollBy({
+        left: direction.current * ((item?.offsetWidth ?? 150) + gap),
+        behavior: "smooth",
+      });
+    }, 5200);
+    return () => {
+      observer.disconnect();
+      windowElement.removeEventListener("scroll", updateControls);
+      window.clearInterval(timer);
+    };
   }, [organizations.length]);
 
   if (!organizations.length) return null;
@@ -64,14 +100,52 @@ function OrganizationRibbon({ feed }: { feed: OpenSourceFeed }) {
     <section
       className="organization-ribbon"
       aria-labelledby="organizations-title"
+      onMouseEnter={() => {
+        paused.current = true;
+      }}
+      onMouseLeave={() => {
+        paused.current = false;
+      }}
+      onFocusCapture={() => {
+        paused.current = true;
+      }}
+      onBlurCapture={(event) => {
+        if (!event.currentTarget.contains(event.relatedTarget))
+          paused.current = false;
+      }}
     >
       <div className="page-width ribbon-inner">
         <div className="ribbon-heading">
-          <span>PUBLIC WORK</span>
-          <h2 id="organizations-title">Organizations I&apos;ve contributed to</h2>
+          <div>
+            <span>PUBLIC WORK</span>
+            <h2 id="organizations-title">
+              Organizations I&apos;ve contributed to
+            </h2>
+          </div>
+          <div
+            className="ribbon-controls"
+            aria-label="Organization carousel controls"
+          >
+            <button
+              type="button"
+              onClick={() => move(-1)}
+              disabled={!canBack}
+              aria-label="Previous organizations"
+            >
+              ←
+            </button>
+            <button
+              type="button"
+              onClick={() => move(1)}
+              disabled={!canForward}
+              aria-label="More organizations"
+            >
+              →
+            </button>
+          </div>
         </div>
         <div className="ribbon-window" ref={windowRef}>
-          <div className="ribbon-track" ref={trackRef}>
+          <div className="ribbon-track">
             {organizations.map((organization) => (
               <a
                 key={organization.login.toLowerCase()}
@@ -100,6 +174,7 @@ function OrganizationRibbon({ feed }: { feed: OpenSourceFeed }) {
 
 function PullCard({
   group,
+  index,
   avatarUrl,
   active,
   pinned,
@@ -108,6 +183,7 @@ function PullCard({
   onToggle,
 }: {
   group: PullGroup;
+  index: number;
   avatarUrl?: string;
   active: boolean;
   pinned: boolean;
@@ -125,6 +201,11 @@ function PullCard({
       onBlur={(event) => {
         if (!event.currentTarget.contains(event.relatedTarget)) onLeave();
       }}
+      onClick={(event) => {
+        if (!(event.target instanceof Element)) return;
+        if (event.target.closest("a, button")) return;
+        onToggle();
+      }}
     >
       <button
         type="button"
@@ -132,16 +213,19 @@ function PullCard({
         onClick={onToggle}
         onFocus={onHover}
         aria-expanded={active}
-        aria-label={`${repoName}: ${active ? "close" : "open"} pull request timeline`}
+        aria-label={`${repoName}: ${pinned ? "unpin" : "pin"} pull request timeline`}
       >
+        <span className="pull-card-index">
+          {String(index + 1).padStart(2, "0")} / PUBLIC CONTRIBUTION
+        </span>
         <span className="pull-card-top">
           <span className="pull-project-identity">
             {avatarUrl ? (
               <Image
                 src={avatarUrl}
                 alt=""
-                width={34}
-                height={34}
+                width={44}
+                height={44}
                 unoptimized
               />
             ) : (
@@ -257,10 +341,11 @@ export function OpenSourceExplorer({
           </span>
         </div>
         <div className="pull-project-grid">
-          {groups.map((group) => (
+          {groups.map((group, index) => (
             <PullCard
               key={group.repository}
               group={group}
+              index={index}
               avatarUrl={organizations.get(group.owner)}
               active={
                 hovered === group.repository || pinned === group.repository

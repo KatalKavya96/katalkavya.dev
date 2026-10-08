@@ -145,7 +145,7 @@ Display up to four; omit low-value tags.
 ## 11. Navigation
 
 Desktop:
-`Home · Projects · Open Source · Coding Profiles/Lab · Journey · About`
+`Home · Projects · Open Source · Coding · Journey`
 with a single right-side CTA: `Let's connect`.
 
 Use an active dot/underline rather than a heavy active tab.

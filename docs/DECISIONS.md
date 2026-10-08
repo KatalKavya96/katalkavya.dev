@@ -73,10 +73,17 @@ Use a warm, photorealistic dusk desk image tailored to the Coding Profiles refer
 
 ## D-011 — Unique organization ribbon
 
-**Status:** Accepted
+**Status:** Superseded by D-012
 **Date:** 2026-10-02
 
 The Open Source ribbon renders each verified organization once. It measures the available space and pans that single track only when it overflows, reversing smoothly at the ends. Its label has a separate column and the moving links remain clipped to the track. Motion pauses during interaction and is disabled for reduced-motion visitors.
+
+## D-012 — Studio-inspired organization carousel and contribution cards
+
+**Status:** Accepted
+**Date:** 2026-10-05
+
+The Open Source section takes its logo-row spacing and restrained proof-card treatment from the local 1forge.in project, and its visible carousel controls from studio.1forge.in. Each verified organization is rendered once in a native horizontal scroll area with a separate heading. The controls move one logo at a time; idle motion reverses at the ends. Pointer and keyboard interaction pause it, and reduced-motion visitors get manual navigation. PR cards keep their verified latest pull request and pinned timeline behavior while using flatter surfaces, larger identity marks, and clearer hierarchy. This replaces D-011's continuous pan with native scrolling so the organizations remain directly navigable.
 
 ---
 
