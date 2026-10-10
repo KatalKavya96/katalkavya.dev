@@ -38,6 +38,10 @@ On hover:
 
 Do not lift cards dramatically.
 
+## Quick navigation
+
+The compact dock may enlarge a focused or hovered control by a few pixels and move it upward by no more than 3px. Its labels must also appear on keyboard focus. On touch layouts it remains a stable size.
+
 ## Filters
 
 Use layout animation to reflow cards. Preserve position and avoid jumpy re-rendering.
@@ -64,6 +68,7 @@ Under `prefers-reduced-motion: reduce`:
 - replace video autoplay with poster,
 - simplify layout transitions,
 - keep state changes immediate and understandable.
+- remove dock magnification and tooltip transitions.
 
 # Current live motion
 

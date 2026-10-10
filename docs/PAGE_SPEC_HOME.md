@@ -34,6 +34,12 @@ These may reorder/emphasize content, but the site must remain fully understandab
 
 Use navigation themes until Kavya's technical categories are confirmed: Build, Contribute, Experiment, Practice.
 
+## Personal context and proof
+
+Follow the capability strip with one calm two-column narrative band inspired by the compact reference portfolio. The left column introduces Kavya through verified public work; the right column shows no more than four live-or-dated proof values and links to GitHub and Coding Profiles.
+
+This section replaces a resume-style About/Skills dump. It must stay concise, use the existing normalized data adapters, and stack into a clear reading sequence on phones.
+
 ## Selected work
 
 Show six verified public projects in a three-column desktop grid and stacked mobile cards. The first row gives the immediate proof; further cards may continue below the viewport. Curation order comes from the private editor.
@@ -51,3 +57,4 @@ If metrics are not verified, omit the strip rather than inventing them.
 - Floating chips reduced to 1–2.
 - Role-lens pills horizontally scroll if retained.
 - Selected projects stack.
+- Personal context precedes the project collection and the proof values become a 2×2 grid.

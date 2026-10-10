@@ -11,6 +11,20 @@ Build reusable primitives before page-specific duplication.
 - global command/search trigger optional
 - `Let's connect` CTA
 
+### `QuickDock`
+
+- compact persistent shortcuts for Home, Projects, Open Source, Coding and Contact
+- supplements rather than replaces the semantic primary header
+- exposes the current route and keyboard-visible labels
+- uses restrained size feedback and disables transition motion when requested
+- uses the attributed spring-magnification primitive adopted from the local `n-portfolio` reference
+
+### `BlurFade`
+
+- attributed reveal primitive adopted from the local `n-portfolio` reference
+- used for major Home compositions and reusable project cards
+- reveals once on entry and renders statically when reduced motion is requested
+
 ### `PageShell`
 
 Owns max-width, horizontal gutters and section spacing.
@@ -101,6 +115,8 @@ Small floating/secondary platform link.
 ### `MetricStrip`
 
 Max four items. Avoid reusing on every page unless it adds page-specific value.
+
+Home may use the metric treatment inside one narrative proof panel. Values must come from the same live adapters and dated fallbacks used elsewhere.
 
 ### `TagList`
 

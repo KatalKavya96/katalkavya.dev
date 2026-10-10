@@ -1,9 +1,11 @@
 "use client";
 
+import Link from "next/link";
 import { createContext, useContext, useEffect, useState } from "react";
 import type { ReactNode } from "react";
 import type { LiveSnapshot } from "@/lib/live-data";
 import {
+  githubSnapshot,
   profileMetricsSnapshot,
   repositoryPushSnapshot,
 } from "@/content/portfolio";
@@ -167,4 +169,58 @@ export function KaggleLiveMetrics() {
 export function MergedPullCount({ fallback }: { fallback: number }) {
   const count = useLiveData()?.github?.mergedPulls;
   return <>{count ?? fallback}</>;
+}
+
+export function HomeProofPanel({ projectCount }: { projectCount: number }) {
+  const snapshot = useLiveData();
+  const live = Boolean(snapshot?.github || snapshot?.leetcode);
+  const metrics = [
+    {
+      value:
+        snapshot?.github?.publicRepos ??
+        profileMetricsSnapshot.github.publicRepos,
+      label: "Public repositories",
+    },
+    {
+      value: snapshot?.github?.mergedPulls ?? githubSnapshot.mergedPullRequests,
+      label: "Merged authored PRs",
+    },
+    {
+      value:
+        snapshot?.leetcode?.solved ?? profileMetricsSnapshot.leetcode.solved,
+      label: "Problems solved",
+    },
+    { value: projectCount, label: "Curated projects" },
+  ];
+
+  return (
+    <div className="home-proof-panel">
+      <div className="home-proof-head">
+        <span>
+          <i aria-hidden="true" /> Public engineering activity
+        </span>
+        <small>{live ? "Live where available" : "Verified Oct 2026"}</small>
+      </div>
+      <div className="home-proof-metrics">
+        {metrics.map((metric) => (
+          <div key={metric.label}>
+            <strong>{metric.value.toLocaleString()}</strong>
+            <span>{metric.label}</span>
+          </div>
+        ))}
+      </div>
+      <div className="home-proof-links">
+        <a
+          href="https://github.com/KatalKavya96"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          Inspect GitHub <span aria-hidden="true">↗</span>
+        </a>
+        <Link href="/coding">
+          Coding profiles <span aria-hidden="true">→</span>
+        </Link>
+      </div>
+    </div>
+  );
 }

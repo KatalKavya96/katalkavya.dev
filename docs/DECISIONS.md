@@ -43,7 +43,7 @@ Filters, project detail pages, contribution timelines, and coding activity graph
 
 ## D-007 — Implementation and imagery
 
-**Status:** Accepted  
+**Status:** Superseded by D-014
 **Date:** 2026-10-01
 
 Use Next.js App Router, strict TypeScript, and CSS variables with custom CSS. Native CSS handles the restrained visual effects without an animation or utility CSS dependency. Home's sphere is CSS-drawn. Projects, Open Source, and Coding use separate generated images optimized to WebP and served through `next/image`.
@@ -84,6 +84,24 @@ The Open Source ribbon renders each verified organization once. It measures the 
 **Date:** 2026-10-05
 
 The Open Source section takes its logo-row spacing and restrained proof-card treatment from the local 1forge.in project, and its visible carousel controls from studio.1forge.in. Each verified organization is rendered once in a native horizontal scroll area with a separate heading. The controls move one logo at a time; idle motion reverses at the ends. Pointer and keyboard interaction pause it, and reduced-motion visitors get manual navigation. PR cards keep their verified latest pull request and pinned timeline behavior while using flatter surfaces, larger identity marks, and clearer hierarchy. This replaces D-011's continuous pan with native scrolling so the organizations remain directly navigable.
+
+## D-013 — Reference-derived personal rhythm and quick navigation
+
+**Status:** Accepted
+**Date:** 2026-10-10
+
+The local `n-portfolio` repository is a design and interaction reference only; its source and content are not part of this project. Adopt its strongest product patterns—immediate personal context, compact public proof, smooth restrained feedback, and persistent quick navigation—inside Kavya's existing dark cinematic system.
+
+Home gains one concise context-and-proof band before selected work. A five-item floating dock supplements the primary header on all routes, while Journey and About return to the six-item primary navigation. The dock never replaces semantic navigation, does not introduce a theme dependency, remains stable on touch screens, and removes transition motion for reduced-motion visitors. Existing page-specific hero identities, typed data adapters, curation rules, and verified-only content remain authoritative.
+
+## D-014 — Directly adopted reference interaction primitives
+
+**Status:** Accepted
+**Date:** 2026-10-10
+
+At Kavya's explicit direction, the spring-magnified dock and blur-fade reveal code are adapted directly from the MIT-licensed local `n-portfolio` reference rather than recreated only with CSS. The required Motion dependency is accepted because these two primitives define the requested interaction language across navigation and project evidence; the license and attribution are preserved in `THIRD_PARTY_NOTICES.md`.
+
+The copied primitives are hardened for this project: strict TypeScript replaces the reference's `any` boundary, reduced-motion visitors receive static rendering, touch layouts do not magnify, and the dock is excluded from the private admin route. This narrowly supersedes D-007's no-animation-dependency choice without authorizing animation elsewhere by default.
 
 ---
 

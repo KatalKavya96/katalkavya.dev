@@ -13,6 +13,9 @@ Meaningful website changes are recorded here.
 - Repository-sourced project imagery, organization avatars, platform logos, and subtle hero motion.
 - Reference-matched Coding Profiles hero artwork with warm desk lighting, five linked platform chips, four live graph cards, and authored PR activity.
 - Keyboard-accessible header search for pages, current GitHub projects, and coding profiles.
+- Compact floating quick-navigation dock inspired by the reference portfolio, with route state, keyboard focus, tooltips, and reduced-motion behavior.
+- Home narrative band pairing a concise personal introduction with four live-or-verified public proof values.
+- MIT-attributed Motion dock and BlurFade primitives adapted directly from the local `n-portfolio` reference, including reduced-motion handling.
 
 - Initial portfolio product brief and strict Codex development contract.
 - Design system and page specifications for Home, Projects, Open Source and Coding Profiles.
@@ -33,4 +36,5 @@ Meaningful website changes are recorded here.
 - Tightened mobile Coding hero spacing and preserved the compact desktop first-screen layout.
 - Reworked the Open Source organization ribbon to remove repeated companies, protect its label from overlap, and pan a single verified list only when needed.
 - Restyled the Open Source logo carousel and PR cards using the 1forge project and Studio as visual references: open logo row, faded edges, circular controls, and calmer proof surfaces.
-- Removed Lab and About from the primary desktop and mobile navigation while keeping their routes available.
+- Kept Lab as a secondary route and restored Journey and About to the six-item primary navigation so the public story is reachable without search.
+- Adapted the reference portfolio's compact reading rhythm, persistent navigation, and proof-first cards without replacing the site-specific cinematic hero identities.

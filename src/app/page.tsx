@@ -1,8 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { ButtonLink, Eyebrow, ProjectCard } from "@/components/ui";
-import { LiveDataProvider, LiveStatus } from "@/components/live-data";
+import {
+  HomeProofPanel,
+  LiveDataProvider,
+  LiveStatus,
+} from "@/components/live-data";
 import { getCuratedProjects } from "@/lib/curation";
+import { BlurFade } from "@/components/reference-interactions";
 
 export const dynamic = "force-dynamic";
 
@@ -13,7 +18,7 @@ export default async function HomePage() {
       <main id="main" className="viewport-page home-page">
         <LiveStatus compact />
         <section className="home-hero page-width">
-          <div className="home-copy">
+          <BlurFade className="home-copy" delay={0.02} yOffset={8}>
             {projects[0] && (
               <a
                 className="hero-status-pill"
@@ -48,8 +53,13 @@ export default async function HomePage() {
                 GitHub <span aria-hidden="true">↗</span>
               </a>
             </div>
-          </div>
-          <div className="sphere-scene" aria-hidden="true">
+          </BlurFade>
+          <BlurFade
+            className="sphere-scene"
+            delay={0.12}
+            yOffset={5}
+            aria-hidden="true"
+          >
             <div className="sphere-halo" />
             <div className="sphere-orbit orbit-one" />
             <div className="sphere-orbit orbit-two" />
@@ -87,7 +97,7 @@ export default async function HomePage() {
               <strong>FrameLabs</strong>
               <small>Collaborative diagrams</small>
             </div>
-          </div>
+          </BlurFade>
         </section>
         <div className="capability-strip">
           <div className="page-width capability-strip-inner">
@@ -105,6 +115,25 @@ export default async function HomePage() {
             </span>
           </div>
         </div>
+        <section className="home-story page-width" aria-labelledby="about-home">
+          <BlurFade className="home-story-copy" inView yOffset={10}>
+            <Eyebrow accent="blue">About the work</Eyebrow>
+            <h2 id="about-home">
+              A portfolio built around inspectable evidence.
+            </h2>
+            <p>
+              I&apos;m Kavya Katal. My public work spans autonomous developer
+              tools, collaborative engineering software, full-stack products,
+              and contributions to Apache and cloud-native projects.
+            </p>
+            <Link className="home-story-link" href="/about">
+              More about me <span aria-hidden="true">→</span>
+            </Link>
+          </BlurFade>
+          <BlurFade inView delay={0.08} yOffset={10}>
+            <HomeProofPanel projectCount={projects.length} />
+          </BlurFade>
+        </section>
         <section
           className="viewport-work page-width"
           aria-labelledby="selected-title"

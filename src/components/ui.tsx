@@ -3,6 +3,7 @@ import Image from "next/image";
 import type { ReactNode } from "react";
 import type { Project } from "@/content/portfolio";
 import { RepoPulse } from "@/components/live-data";
+import { BlurFade } from "@/components/reference-interactions";
 
 export function Eyebrow({
   children,
@@ -161,27 +162,34 @@ export function ProjectVisual({ project }: { project: Project }) {
 
 export function ProjectCard({ project }: { project: Project }) {
   return (
-    <a
-      className="project-card real-project-card"
-      href={project.sourceUrl}
-      target="_blank"
-      rel="noopener noreferrer"
+    <BlurFade
+      className="project-card-reveal"
+      inView
+      inViewMargin="-80px"
+      yOffset={10}
     >
-      <ProjectVisual project={project} />
-      <div className="card-body">
-        <div className="card-kicker">
-          <span>
-            {project.number} / {project.category}
+      <a
+        className="project-card real-project-card"
+        href={project.sourceUrl}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <ProjectVisual project={project} />
+        <div className="card-body">
+          <div className="card-kicker">
+            <span>
+              {project.number} / {project.category}
+            </span>
+            <RepoPulse slug={project.slug} pushedAt={project.pushedAt} />
+          </div>
+          <h3>{project.title}</h3>
+          <p>{project.description}</p>
+          <span className="card-bottom">
+            <span>{project.tags.slice(0, 3).join(" · ")}</span>
+            <span aria-hidden="true">↗</span>
           </span>
-          <RepoPulse slug={project.slug} pushedAt={project.pushedAt} />
         </div>
-        <h3>{project.title}</h3>
-        <p>{project.description}</p>
-        <span className="card-bottom">
-          <span>{project.tags.slice(0, 3).join(" · ")}</span>
-          <span aria-hidden="true">↗</span>
-        </span>
-      </div>
-    </a>
+      </a>
+    </BlurFade>
   );
 }
